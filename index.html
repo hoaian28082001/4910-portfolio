@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Truong Luu — Electrical Engineering Portfolio</title>
+<meta name="description" content="Senior portfolio of Truong Luu, Electrical Engineering at Iowa State University. Power systems and VLSI.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css?v=6">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="cover">
+  <div class="cover-art">
+    <svg class="sch" data-fig="cover" data-manual preserveAspectRatio="xMaxYMid slice" role="img"
+         aria-label="Technical drawing: a 300 mm silicon wafer with its die map, one die magnified to show a CMOS inverter layout, and an exploded view of the CMOS process layers."></svg>
+  </div>
+
+  <aside class="cover-panel">
+    <p class="top fade-in">EE 4910 · Senior Portfolio</p>
+    <h1 class="cover-title">
+      <span class="cover-name">Truong Luu</span>
+      <span class="cover-sub fade-in">Electrical Engineering Portfolio</span>
+    </h1>
+    <div class="cover-rule"></div>
+    <p class="cover-school fade-in">Iowa State University · MMXXVII</p>
+    <nav class="cover-links fade-in" aria-label="Portfolio">
+      <a class="enter" href="contents.html">Enter <span>→</span></a>
+      <a href="resume.html">Résumé</a>
+      <a href="about.html#contact">Contact</a>
+    </nav>
+  </aside>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+  <script src="assets/js/schematic.js?v=6"></script>
+  <script>
+  (function () {
+    const svg = document.querySelector('.cover-art .sch');
+    const tall = window.matchMedia('(max-aspect-ratio: 1/1)');
+    Schematic.render(svg, tall.matches ? 'coverTall' : 'cover');
+
+    // split the name into letters for the reveal
+    const name = document.querySelector('.cover-name');
+    name.innerHTML = name.textContent.split('').map(c => c === ' ' ? ' ' : `<span class="ch">${c}</span>`).join('');
+
+    const reduce = false; // see note in schematic.js
+    if (reduce || !window.anime) {
+      document.querySelectorAll('.fade-in').forEach(el => { el.style.opacity = 1; });
+      Schematic.draw(svg);
+    } else {
+      anime.set('.cover-name .ch', { opacity: 0 });
+      anime.set('.cover-rule', { scaleX: 0 });
+      anime.set('.cover-panel', { opacity: 0 });
+      Schematic.draw(svg);
+      anime.timeline({ easing: 'easeOutQuart' })
+        .add({ targets: '.cover-panel', opacity: [0, 1], duration: 1200, easing: 'linear' }, 200)
+        .add({ targets: '.cover-panel .top', opacity: [0, 1], duration: 900 }, 600)
+        .add({ targets: '.cover-name .ch', opacity: [0, 1], translateY: [10, 0], duration: 1100, delay: anime.stagger(70) }, 1100)
+        .add({ targets: '.cover-sub', opacity: [0, 1], duration: 1000 }, 1900)
+        .add({ targets: '.cover-rule', scaleX: [0, 1], duration: 1000, easing: 'easeInOutQuart' }, 2200)
+        .add({ targets: ['.cover-school', '.cover-links'], opacity: [0, 1], translateY: [6, 0], duration: 900, delay: anime.stagger(150) }, 2600);
+    }
+
+    tall.addEventListener('change', e => {
+      Schematic.render(svg, e.matches ? 'coverTall' : 'cover');
+      Schematic.draw(svg);
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === 'ArrowRight') location.href = 'contents.html';
+    });
+  })();
+  </script>
+</body>
+</html>
