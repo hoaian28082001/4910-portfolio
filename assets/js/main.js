@@ -73,7 +73,7 @@
           complete: () => el.classList.add('in')
         });
       });
-    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    }, { rootMargin: '0px 0px -6% 0px', threshold: 0 });
     reveals.forEach(el => io.observe(el));
     figs.forEach(svg => io.observe(svg));
   }

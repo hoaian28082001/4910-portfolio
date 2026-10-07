@@ -8,7 +8,7 @@ A static site (plain HTML/CSS/JS, no build step) in a classical portfolio style 
 
 | Part | File | Contents |
 |---|---|---|
-| Cover | `index.html` | Wafer → magnified die → exploded process stack; name in a framed panel |
+| Cover | `index.html` | Transmission line in elevation, insulator-string detail, rotating three-phase phasors; name in a framed panel |
 | Index | `contents.html` | Table of contents |
 | I | `about.html` | Welcome, name & contact, career objective, focus areas |
 | II | `experience.html` | Work experience (EP2 internship), ventures, senior design + 3 projects |
@@ -23,8 +23,8 @@ A static site (plain HTML/CSS/JS, no build step) in a classical portfolio style 
 - **Documents**: put PDFs in `assets/docs/` and link them, e.g. `href="assets/docs/ethics-paper.pdf"`.
 - **Navigation** (top bar + previous/next footer) is generated from the `PAGES` list in `assets/js/main.js`.
 - **Schematics** are defined in `assets/js/schematic.js`. Use any figure with `<svg class="sch" data-fig="NAME"></svg>`.
-  Available: `wafer`, `stack` (exploded CMOS layers), `grid` (power plant → towers → substation), `oneline`, `buck`, `inverter`, `layout`, `protection`, `ecprobe`, `dac`, `rlc`, `scope`.
-- **Colors**: black & white throughout. The only colour is in the animation (current pulses, litho scan, highlighted die), set by `--g1`, `--g2`, `--g3` in `assets/css/style.css`.
+  Available: `tower` (lattice tower line), `phasor` (rotating three-phase phasors), `grid` (power plant → towers → substation), `oneline`, `buck`, `protection`, `inverter`, `layout`, `ecprobe`, `dac`, `rlc`, `scope`.
+- **Colors**: black & white throughout. The only colour is in the animation (current pulses, phasors and their waves), set by `--g1`, `--g2`, `--g3` in `assets/css/style.css`.
 - **Motion**: drawings animate even when the OS has "reduce motion" on (see the note in `schematic.js`).
 - **Caching**: after editing CSS/JS, bump the `?v=` number on the `<link>`/`<script>` tags so browsers pick up the change.
 
