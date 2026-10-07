@@ -81,10 +81,21 @@ p { margin: 0 0 1em; }
 .sch .lbl.cap { font: 500 12.5px var(--serif); letter-spacing: .24em; fill: #8b8b8b; }
 .sch .lbl.dimtxt { font: 400 17px var(--serif); letter-spacing: .06em; fill: #444; }
 .sch .sub { font-size: .72em; }
-/* the colour layer */
-.sch .hl { fill: rgba(15, 147, 180, .14); stroke: var(--g2); stroke-width: 1.8; }
-.sch .sc0 { stop-color: var(--g2); stop-opacity: 0; }
-.sch .sc1 { stop-color: var(--g2); stop-opacity: .22; }
+/* distant towers keep a hairline at any scale */
+.sch .nodraw .ln { vector-effect: non-scaling-stroke; stroke-width: .8; }
+.sch .nodraw .ln.thin { stroke-width: .5; }
+/* the colour layer: phasors, their waves and current pulses */
+.sch .phl { stroke: #262626; stroke-width: 1.4; stroke-linecap: round; }
+.sch .wave { fill: none; stroke-width: 1.5; }
+.sch .proj { stroke-width: .8; stroke-dasharray: 3 3; opacity: .7; }
+.sch .leg { stroke-width: 2; }
+.sch .ptxt { font: 400 15px var(--serif); fill: #333; letter-spacing: .02em; }
+.sch .c0.wave, .sch .c0.proj, .sch .c0.leg { stroke: var(--g1); }
+.sch .c1.wave, .sch .c1.proj, .sch .c1.leg { stroke: var(--g2); }
+.sch .c2.wave, .sch .c2.proj, .sch .c2.leg { stroke: var(--g3); }
+.sch .tip.c0 { fill: var(--g1); }
+.sch .tip.c1 { fill: var(--g2); }
+.sch .tip.c2 { fill: var(--g3); }
 .sch .pulse .halo { opacity: .18; }
 .sch .pulse.c0 circle { fill: var(--g1); }
 .sch .pulse.c1 circle { fill: var(--g2); }
@@ -164,6 +175,9 @@ figcaption { margin-top: 18px; text-align: center; }
 }
 @media (max-width: 520px) { .proj-fig, .proj-body .spec { padding: 24px 18px; } .proj-head { padding: 30px 18px 26px; } }
 
+.shot { display: block; margin-top: 28px; border: 1px solid var(--hair); background: none; }
+.shot img { display: block; width: 100%; height: auto; filter: grayscale(1) contrast(1.05); transition: filter .4s ease; }
+.shot:hover img { filter: none; }
 .doclinks { list-style: none; padding: 0; margin: 0; }
 .doclinks li { border-top: 1px solid var(--hair-2); margin: 0; }
 .doclinks li:first-child { border-top: 0; }

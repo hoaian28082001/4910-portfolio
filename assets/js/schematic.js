@@ -1,6 +1,6 @@
 /* Technical drawings (SVG) animated with anime.js.
-   Usage: <svg class="sch" data-fig="wafer"></svg>  →  Schematic.render(svg); Schematic.draw(svg)
-   Drawings are black & white; the only colour is in the moving parts (current pulses, litho scan). */
+   Usage: <svg class="sch" data-fig="tower"></svg>  →  Schematic.render(svg); Schematic.draw(svg)
+   Drawings are black & white; the only colour is in the moving parts (current pulses, phasors). */
 (function () {
   'use strict';
   const NS = 'http://www.w3.org/2000/svg';
@@ -28,23 +28,6 @@
   const opamp = () => ln('M-30 -36V36L36 0Z') + ln('M-50 -18H-30M-50 18H-30M36 0H56') + ln('M-25 -18h8M-21 -22v8M-25 18h8');
   const contact = (x, y) => ln(`M${x} ${y}h12v12h-12ZM${x} ${y}l12 12M${x + 12} ${y}l-12 12`);
   const ellipse = (cx, cy, rx, ry, cls = '') => ln(`M${cx - rx} ${cy}a${rx} ${ry} 0 1 0 ${2 * rx} 0a${rx} ${ry} 0 1 0 ${-2 * rx} 0`, cls);
-
-  /* isometric helper: x → right-down, y → left-down, z → up */
-  function iso(ox, oy) {
-    const C = 0.866, S = 0.5;
-    const P = (x, y, z) => [+(ox + (x - y) * C).toFixed(1), +(oy + (x + y) * S - z).toFixed(1)];
-    const p = a => a.join(' ');
-    // solid block: two front faces + top, filled white so it hides what's behind
-    const block = (x, y, z, w, d, t, hatch) => {
-      const A = P(x, y, z + t), B = P(x + w, y, z + t), Cc = P(x + w, y + d, z + t), D = P(x, y + d, z + t);
-      const B2 = P(x + w, y, z), C2 = P(x + w, y + d, z), D2 = P(x, y + d, z);
-      const top = `M${p(A)}L${p(B)}L${p(Cc)}L${p(D)}Z`;
-      return ln(`M${p(B)}L${p(B2)}L${p(C2)}L${p(Cc)}Z`, 'face side') +
-        ln(`M${p(D)}L${p(Cc)}L${p(C2)}L${p(D2)}Z`, 'face') +
-        ln(top, 'face') + (hatch ? `<path class="fill" fill="url(#${hatch}-%UID%)" d="${top}"/>` : '');
-    };
-    return { P, block };
-  }
 
   /* ---------- figures ---------- */
   const F = {};
@@ -159,78 +142,174 @@
     return { w: 1400, h: 372, body: b, play: playGrid };
   };
 
-  /* --- silicon wafer with die map --- */
-  function waferParts(cx, cy, R, p, target, dims = true) {
-    let b = '', dies = '';
-    const n = Math.ceil(R / p) + 1, lim = R - 14, s = p - 4;
-    let hit = null;
-    for (let i = -n; i < n; i++) for (let j = -n; j < n; j++) {
-      const x = cx + i * p + 2, y = cy + j * p + 2;
-      const far = Math.max(Math.hypot(x - cx, y - cy), Math.hypot(x + s - cx, y - cy), Math.hypot(x - cx, y + s - cy), Math.hypot(x + s - cx, y + s - cy));
-      if (far > lim) continue;
-      const d = Math.hypot(x + s / 2 - cx, y + s / 2 - cy).toFixed(0);
-      dies += `<path class="ln die" data-d="${d}" d="M${x} ${y}h${s}v${s}h${-s}Z"/>`;
-      if (target && i === target[0] && j === target[1]) hit = { x, y, s };
+  /* --- double-circuit lattice tower (local: base centre at 0,0; up is −y) --- */
+  function lattice() {
+    const hw = h => h <= 440 ? 160 - 116 * h / 440 : h <= 700 ? 44 - 14 * (h - 440) / 260 : 30 - 30 * (h - 700) / 60;
+    const X = (s, h) => +(s * hw(h)).toFixed(1);
+    let b = ln('M-160 0L-44 -440L-30 -700L0 -760L30 -700L44 -440L160 0', 'leg');
+    const lv = [0, 90, 170, 240, 300, 350, 395, 440, 492, 544, 596, 648, 700];
+    let br = '', strut = '';
+    for (let i = 0; i < lv.length - 1; i++) {
+      const a = lv[i], c = lv[i + 1];
+      br += `M${X(-1, a)} ${-a}L${X(1, c)} ${-c}M${X(1, a)} ${-a}L${X(-1, c)} ${-c}M${X(-1, c)} ${-c}H${X(1, c)}`;
+      if (c - a >= 60) { const m = (a + c) / 2; strut += `M${X(-1, m)} ${-m}H${X(1, m)}`; }
     }
-    b += ln(`M${cx} ${cy}m${-R} 0a${R} ${R} 0 1 0 ${2 * R} 0a${R} ${R} 0 1 0 ${-2 * R} 0`, 'edge');
-    b += dsh(`M${cx} ${cy}m${-(R - 10)} 0a${R - 10} ${R - 10} 0 1 0 ${2 * (R - 10)} 0a${R - 10} ${R - 10} 0 1 0 ${-2 * (R - 10)} 0`);
-    b += ln(`M${cx - 9} ${cy + R - 1}L${cx} ${cy + R - 12}L${cx + 9} ${cy + R - 1}`);
-    b += dies;
-    b += dsh(`M${cx - R - 36} ${cy}H${cx + R + 36}M${cx} ${cy - R - 36}V${cy + R + 36}`, 'center');
-    if (dims) {
-      const yd = cy - R - 26;
-      b += dsh(`M${cx - R} ${cy}V${yd - 8}M${cx + R} ${cy}V${yd - 8}`, 'light');
-      b += ln(`M${cx - R} ${yd}H${cx + R}M${cx - R + 9} ${yd - 4}L${cx - R} ${yd}L${cx - R + 9} ${yd + 4}M${cx + R - 9} ${yd - 4}L${cx + R} ${yd}L${cx + R - 9} ${yd + 4}`, 'thin');
-      b += `<text class="lbl dimtxt" x="${cx}" y="${yd - 8}" text-anchor="middle">Ø 300 mm</text>`;
-      b += txt(cx + 16, cy + R - 16, 'NOTCH', 'start', 'sm');
+    b += ln(br, 'thin') + ln(strut, 'thin');
+    const attach = [];
+    let arms = '', web = '', ins = '';
+    for (const [h, L] of [[480, 210], [570, 180], [660, 150]]) for (const s of [-1, 1]) {
+      const xb = X(s, h), xt = X(s, h + 34), tip = s * L;
+      arms += `M${xb} ${-h}L${tip} ${-h}L${xt} ${-(h + 34)}`;
+      web += `M${xb} ${-h}`;
+      for (let k = 1; k < 7; k++) {
+        const f = k / 7;
+        web += k % 2 ? `L${(xt + (tip - xt) * f).toFixed(1)} ${(-(h + 34) + 34 * f).toFixed(1)}` : `L${(xb + (tip - xb) * f).toFixed(1)} ${-h}`;
+      }
+      ins += `M${tip} ${-h}V${-h + 64}`;
+      for (let k = 0; k < 8; k++) ins += `M${tip - 7} ${-h + 12 + k * 6.5}h14`;
+      attach.push([tip, -h + 64]);
     }
-    // litho scan + highlighted die live in the colour layer
-    let over = `<clipPath id="wc-%UID%"><circle cx="${cx}" cy="${cy}" r="${R - 2}"/></clipPath>`;
-    over += `<g clip-path="url(#wc-%UID%)"><rect class="scan" x="${cx - R - 140}" y="${cy - R}" width="140" height="${2 * R}" fill="url(#scan-%UID%)" data-span="${2 * R + 140}"/></g>`;
-    if (hit) over += `<path class="hl" d="M${hit.x} ${hit.y}h${hit.s}v${hit.s}h${-hit.s}Z"/>`;
-    return { body: b, over, hit };
+    b += ln(arms) + ln(web, 'thin') + ln(ins);
+    b += ln('M-56 -740H56M-56 -740L-17 -726M56 -740L17 -726');
+    return { body: b, attach, gw: [[-56, -740], [56, -740]] };
   }
 
-  F.wafer = () => {
-    const w = waferParts(320, 340, 280, 36, [2, -4]);
-    return { w: 640, h: 660, body: w.body, over: w.over, play: playWafer };
+  /* a line of towers receding to the right; the conductors carry the current pulses */
+  function towerScene({ G, gTo, main, far, left }) {
+    const T = lattice();
+    const P = (t, a) => [t.x + t.s * a[0], t.y + t.s * a[1]];
+    const sag = (p, q) => `Q${((p[0] + q[0]) / 2).toFixed(1)} ${((p[1] + q[1]) / 2 + Math.abs(q[0] - p[0]) * 0.09).toFixed(1)} ${q[0].toFixed(1)} ${q[1].toFixed(1)}`;
+    let hatch = '';
+    for (let x = 6; x < gTo; x += 14) hatch += `M${x} ${G}l-7 9`;
+    let b = `<g class="g-ground">${ln(`M0 ${G}H${gTo}`)}${ln(hatch, 'thin')}</g>`;
+    b += `<g class="g-far nodraw">${far.map(t => scaled(t.x, t.y, t.s, T.body)).join('')}</g>`;
+    b += `<g class="g-main">${scaled(main.x, main.y, main.s, T.body)}</g>`;
+    let cond = '';
+    const run = (a, cls) => {
+      const pts = [[left, P(main, a)[1] + 60 * main.s], P(main, a), ...far.map(t => P(t, a))];
+      let d = `M${pts[0][0]} ${pts[0][1].toFixed(1)}`;
+      for (let i = 1; i < pts.length; i++) d += sag(pts[i - 1], pts[i]);
+      cond += ln(d, cls);
+    };
+    T.attach.forEach(a => run(a, 'flowln cond'));
+    T.gw.forEach(a => run(a, 'thin'));
+    b += `<g class="g-cond">${cond}</g>`;
+    return { body: b };
+  }
+
+  F.tower = () => {
+    const sc = towerScene({ G: 500, gTo: 700, left: -40, main: { x: 190, y: 500, s: 0.6 },
+      far: [{ x: 430, y: 494, s: 0.3 }, { x: 545, y: 490, s: 0.17 }, { x: 612, y: 487, s: 0.1 }] });
+    return { w: 700, h: 520, body: sc.body, play: (svg, tl) => playTowerScene(svg, tl, 0, svg.querySelector('.art')) };
   };
 
-  /* --- exploded CMOS process stack (isometric) --- */
-  function stackParts() {
-    const W = 220, gap = 56, C = 0.866;
-    const zs = [0, 30 + gap, 30 + 2 * gap, 30 + 3 * gap, 30 + 4 * gap, 30 + 5 * gap, 30 + 6 * gap];
-    const zTop = zs[6] + 10;
-    const I = iso(W * C + 4, zTop + 8);
-    const L = [];
-    L.push(['P-SUBSTRATE', I.block(0, 0, 0, W, W, 30, null)]);
-    L.push(['ACTIVE (N+ / P+)', I.block(28, 24, zs[1], 70, 172, 6, 'd') + I.block(122, 24, zs[2 - 1], 70, 172, 6, 'd')]);
-    L.push(['POLYSILICON GATES', [0, 1, 2].map(i => I.block(16, 56 + i * 46, zs[2], 188, 12, 6, 'p')).join('')]);
-    let cts = '';
-    for (const x of [56, 150]) for (const y of [34, 82, 128, 176]) cts += I.block(x, y, zs[3], 10, 10, 14, null);
-    L.push(['CONTACTS', cts]);
-    L.push(['METAL 1', [0, 1, 2, 3].map(i => I.block(40 + i * 48, 14, zs[4], 22, 192, 8, 'm')).join('')]);
-    L.push(['VIAS', [0, 1, 2, 3].map(i => I.block(46 + i * 48, 100, zs[5], 10, 10, 12, null)).join('')]);
-    L.push(['METAL 2', [0, 1, 2, 3].map(i => I.block(14, 22 + i * 50, zs[6], 192, 24, 8, 'm')).join('')]);
-    // alignment guides through the stack corners
-    let guide = '';
-    for (const [x, y] of [[W, 0], [0, W], [W, W]]) {
-      const a = I.P(x, y, 30), c = I.P(x, y, zTop);
-      guide += `M${a[0]} ${a[1]}L${c[0]} ${c[1]}`;
+  /* --- magnified suspension insulator string --- */
+  function insulatorDetail(bx, by) {
+    const cx = bx + 130, cy = by + 292;
+    let b = box(bx, by, 300, 330);
+    let web = `M${bx + 20} ${by + 44}`;
+    for (let x = bx + 40, up = true; x <= bx + 280; x += 20, up = !up) web += `L${x} ${by + (up ? 24 : 44)}`;
+    b += ln(`M${bx + 20} ${by + 24}H${bx + 280}M${bx + 20} ${by + 44}H${bx + 280}`) + ln(web, 'thin');
+    b += ln(`M${cx} ${by + 60}V${by + 268}`);
+    b += ln(`M${cx - 6} ${by + 44}v10a6 6 0 0 0 12 0v-10`);
+    b += ln(`M${cx - 4} ${by + 66}C${cx - 34} ${by + 68} ${cx - 44} ${by + 84} ${cx - 40} ${by + 106}`);
+    b += ln(`M${cx - 4} ${by + 270}C${cx - 34} ${by + 268} ${cx - 44} ${by + 252} ${cx - 40} ${by + 230}`);
+    for (let k = 0; k < 9; k++) {
+      const y = by + 86 + k * 21;
+      b += ln(`M${cx - 7} ${y - 13}h14v6h-14Z`, 'face') +
+        ln(`M${cx - 34} ${y}C${cx - 24} ${y - 9} ${cx + 24} ${y - 9} ${cx + 34} ${y}C${cx + 20} ${y + 5} ${cx - 20} ${y + 5} ${cx - 34} ${y}Z`, 'face');
     }
-    let b = dsh(guide, 'light');
-    L.forEach(([name, parts], i) => {
-      const z = i === 0 ? 15 : zs[i] + 4;
-      const a = I.P(W, 0, z);
-      const lx = a[0] + 18, ly = a[1] + 4;
-      b += `<g class="layer" data-i="${i}">${parts}${ln(`M${a[0] + 4} ${a[1]}H${lx - 4}`, 'thin')}${txt(lx, ly, name, 'start', 'sm')}</g>`;
-    });
-    return { body: b, w: W * 2 * C + 170, h: zTop + W + 30 };
+    b += ln(`M${cx} ${by + 268}V${cy - 16}`) + ln(`M${cx - 26} ${cy - 14}Q${cx} ${cy + 28} ${cx + 26} ${cy - 14}`);
+    b += circ(cx, cy, 16, 'face') + dot(cx, cy, 2.4);
+    for (let k = 0; k < 6; k++) { const a = k * Math.PI / 3; b += dot((cx + 5 * Math.cos(a)).toFixed(1), (cy + 5 * Math.sin(a)).toFixed(1), 2.2); }
+    for (let k = 0; k < 12; k++) { const a = k * Math.PI / 6 + Math.PI / 12; b += circ((cx + 11 * Math.cos(a)).toFixed(1), (cy + 11 * Math.sin(a)).toFixed(1), 2.9, 'thin'); }
+    b += txt(cx + 60, by + 64, 'CROSS-ARM', 'start', 'sm');
+    b += ln(`M${cx + 38} ${by + 170}H${cx + 46}`, 'thin') + txt(cx + 50, by + 168, 'CAP-AND-PIN', 'start', 'sm') + txt(cx + 50, by + 181, 'DISCS × 9', 'start', 'sm');
+    b += txt(bx + 14, by + 128, 'ARCING', 'start', 'sm') + txt(bx + 14, by + 141, 'HORN', 'start', 'sm');
+    b += ln(`M${cx + 18} ${cy}H${cx + 28}`, 'thin') + txt(cx + 32, cy - 3, 'ACSR', 'start', 'sm') + txt(cx + 32, cy + 10, 'CONDUCTOR', 'start', 'sm');
+    return b;
   }
 
-  F.stack = () => {
-    const s = stackParts();
-    return { w: s.w, h: s.h, body: s.body, play: playStack };
+  /* --- three-phase phasors that rotate and trace their sine waves --- */
+  const PH = [0, -2 * Math.PI / 3, 2 * Math.PI / 3];
+  function phasorParts(cx, cy, A, x0, x1, P, legendY) {
+    let b = circ(cx, cy, A, 'thin') + ln(`M${cx - A - 14} ${cy}H${x1}`, 'thin') + ln(`M${cx} ${cy - A - 14}V${cy + A + 14}`, 'thin');
+    let ticks = '';
+    for (let x = x0; x <= x1 + 0.1; x += P / 4) ticks += `M${x} ${cy - 3}V${cy + 3}`;
+    b += ln(ticks, 'thin') + ln(`M${x0} ${cy - A - 8}V${cy + A + 8}`, 'thin');
+    b += txt(cx + A * 0.72 + 6, cy - A * 0.72 - 4, 'ωt', 'start', 'sm') + txt(x1, cy + A + 22, 't →', 'end', 'sm');
+    let o = `<clipPath id="pc-%UID%"><rect x="${x0}" y="${cy - A - 8}" width="${x1 - x0}" height="${2 * A + 16}"/></clipPath>`;
+    o += `<g class="phasor" data-cx="${cx}" data-cy="${cy}" data-a="${A}" data-p="${P}"><g clip-path="url(#pc-%UID%)">`;
+    PH.forEach((ph, i) => {
+      let d = '';
+      for (let u = x0 - P; u <= x1; u += 2) d += `${d ? 'L' : 'M'}${u.toFixed(1)} ${(cy - A * Math.sin(ph - 2 * Math.PI * (u - x0) / P)).toFixed(1)}`;
+      o += `<path class="wave c${i}" d="${d}"/>`;
+    });
+    o += '</g>';
+    PH.forEach((ph, i) => {
+      const x = (cx + A * Math.cos(ph)).toFixed(1), y = (cy - A * Math.sin(ph)).toFixed(1);
+      o += `<line class="proj c${i}" x1="${x}" y1="${y}" x2="${x0}" y2="${y}"/><line class="phl" x1="${cx}" y1="${cy}" x2="${x}" y2="${y}"/><circle class="tip c${i}" cx="${x}" cy="${y}" r="3.4"/>`;
+    });
+    if (legendY) ['V<tspan dy="3" class="sub">a</tspan><tspan dy="-3"> = V ∠ 0°</tspan>', 'V<tspan dy="3" class="sub">b</tspan><tspan dy="-3"> = V ∠ −120°</tspan>', 'V<tspan dy="3" class="sub">c</tspan><tspan dy="-3"> = V ∠ +120°</tspan>'].forEach((s, i) => {
+      const y = legendY + i * 22;
+      o += `<line class="leg c${i}" x1="${cx - A}" y1="${y - 4}" x2="${cx - A + 22}" y2="${y - 4}"/><text class="ptxt" x="${cx - A + 32}" y="${y}">${s}</text>`;
+    });
+    o += '</g>';
+    return { body: b, over: o };
+  }
+
+  F.phasor = () => {
+    const p = phasorParts(96, 104, 70, 196, 430, 156, 222);
+    return { w: 440, h: 280, body: p.body, over: p.over, play: playPhasor };
+  };
+
+  /* --- EE 230: comparator thresholds with hysteresis --- */
+  F.hyst = () => {
+    const X = t => +(60 + t * 2.75).toFixed(1);            // °C → x
+    let b = ln(`M60 222H${X(124)}M${X(124) - 8} 218L${X(124)} 222L${X(124) - 8} 226`, 'thin') + ln('M60 222V20', 'thin');
+    let ticks = '';
+    for (const t of [0, 30, 40, 80, 100, 120]) ticks += `M${X(t)} 222v5`;
+    b += ln(ticks, 'thin');
+    for (const t of [30, 40, 80, 100]) b += txt(X(t), 242, t + '°', 'middle', 'sm');
+    b += txt(X(124), 242, 'T (°C)', 'end', 'sm');
+    // a loop: off level → on at tUp while heating, back off at tDn while cooling
+    const loop = (tDn, tUp, yOff, yOn) =>
+      ln(`M${X(4)} ${yOff}H${X(tUp)}V${yOn}H${X(118)}`) +
+      ln(`M${X(tUp)} ${yOn}H${X(tDn)}V${yOff}H${X(tUp)}`, 'thin') +
+      ln(`M${X(tUp) - 4} ${(yOff + yOn) / 2 + 4}L${X(tUp)} ${(yOff + yOn) / 2 - 4}L${X(tUp) + 4} ${(yOff + yOn) / 2 + 4}`) +
+      ln(`M${X(tDn) - 4} ${(yOff + yOn) / 2 - 4}L${X(tDn)} ${(yOff + yOn) / 2 + 4}L${X(tDn) + 4} ${(yOff + yOn) / 2 - 4}`) +
+      dsh(`M${X(tDn)} ${yOn}V222M${X(tUp)} ${yOn}V222`, 'light') +
+      `<path class="flow" d="M${X(4)} ${yOff}H${X(tUp)}V${yOn}H${X(118)}H${X(tDn)}V${yOff}H${X(4)}"/>`;
+    b += loop(30, 40, 196, 150) + loop(80, 100, 112, 66);
+    b += txt(50, 154, 'ON', 'end', 'sm') + txt(50, 200, 'OFF', 'end', 'sm') + txt(50, 70, 'ON', 'end', 'sm') + txt(50, 116, 'OFF', 'end', 'sm');
+    b += txt(X(4), 138, 'ORANGE LED  (GREEN = NOT ORANGE)', 'start', 'sm') + txt(X(4), 54, 'RED LED', 'start', 'sm');
+    return { w: 420, h: 252, body: b, play: playFlow };
+  };
+
+  /* --- EE 3030: the PLECS energy system as a one-line block diagram --- */
+  F.pesys = () => {
+    const Y = 92;
+    const conv = (x, a, c) => box(x, Y - 28, 56, 56) + ln(`M${x} ${Y + 28}L${x + 56} ${Y - 28}`, 'thin') + a(x + 6, Y - 18) + c(x + 34, Y + 14);
+    const dc = (x, y) => ln(`M${x} ${y}h14M${x} ${y + 5}h14`);
+    const ac = (x, y) => ln(`M${x} ${y + 2}c2.5 -6 5 -6 7.5 0s5 6 7.5 0`);
+    let b = '';
+    b += circ(40, Y, 22) + ln(`M33 ${Y - 6}h14M40 ${Y - 13}v14M33 ${Y + 10}h14`, 'thin');
+    b += wire([62, Y], [90, Y]) + conv(90, dc, dc);
+    b += wire([146, Y], [200, Y]) + dot(172, Y);
+    b += conv(200, dc, ac) + wire([256, Y], [280, Y]);
+    b += at(310, Y, 0, ind().replace('M-40 0H-32', 'M-30 0H-32').replace('H40', 'H30'));
+    b += wire([340, Y], [372, Y]) + dot(354, Y) + at(354, Y + 26, 90, cap().replace('M-40 0H-5', 'M-14 0H-5').replace('H40', 'H14')) + at(354, Y + 40, 0, gnd());
+    b += circ(388, Y, 16) + circ(410, Y, 16) + wire([426, Y], [446, Y]);
+    b += box(446, Y - 8, 12, 16) + wire([458, Y], [532, Y]) + box(532, Y - 8, 12, 16) + wire([544, Y], [564, Y]);
+    b += ln(`M564 ${Y - 34}V${Y + 34}`, 'bus');
+    for (const y of [Y - 24, Y, Y + 24]) b += ln(`M564 ${y}H592M586 ${y - 5}L592 ${y}L586 ${y + 5}`);
+    b += wire([172, Y], [172, 186], [200, 186]) + box(200, 158, 56, 56) + ln(`M200 214L256 158`, 'thin') + dc(206, 168) + dc(234, 200);
+    b += wire([256, 186], [300, 186]) + ln('M300 186h10M304 180L310 186L304 192');
+    b += `<path class="flow" d="M62 ${Y}H564"/><path class="flow" d="M172 ${Y}V186H300"/>`;
+    b += txt(172, Y - 40, '1 500 V DC BUS', 'middle', 'sm') + ln(`M172 ${Y - 34}V${Y - 4}`, 'thin');
+    for (const [x, s] of [[40, 'SOURCE'], [118, 'BOOST'], [228, '3φ INVERTER'], [306, 'LC FILTER'], [399, 'XFMR'], [495, 'LINE'], [578, 'LOADS']]) b += txt(x, Y + 46, s, 'middle', 'sm');
+    b += txt(228, 234, 'BUCK', 'middle', 'sm') + txt(316, 190, '48 V DC LOAD', 'start', 'sm');
+    return { w: 620, h: 246, body: b, play: playFlow };
   };
 
   /* --- classic schematics --- */
@@ -346,27 +425,30 @@
     return { w: 360, h: 246, body: b, play: playFlow };
   };
 
-  /* --- cover: wafer → magnified die → exploded process stack --- */
+  /* --- cover: a transmission line in elevation → detail A (insulator string) + detail B (phasors) --- */
   F.cover = () => {
-    const wf = waferParts(360, 450, 400, 44, [3, -5]);
-    const h = wf.hit;
-    const st = stackParts(), ss = 0.6;
-    let b = `<g data-part="wafer">${wf.body}</g>`;
-    // magnified die
-    const bx = 800, by = 64, bw = 290, bh = 248;
-    let mag = box(bx, by, bw, bh) + scaled(bx + 22, by + 26, 0.66, F.layout().body);
-    mag += txt(bx, by + bh + 24, 'DIE (3, −5) · INVERTER LAYOUT', 'start', 'cap');
-    let lead = dsh(`M${h.x + h.s} ${h.y}L${bx} ${by}M${h.x + h.s} ${h.y + h.s}L${bx} ${by + bh}`, 'light');
-    b += `<g data-part="lead">${lead}</g><g data-part="mag">${mag}</g>`;
-    b += `<g data-part="stack">${scaled(790, 380, ss, st.body)}${txt(bx, 872, 'SECTION A–A · PROCESS STACK', 'start', 'cap')}</g>`;
-    b += txt(420, 886, 'FIG. I · 300 MM SILICON WAFER', 'start', 'cap');
-    return { w: 1120, h: 900, body: b, over: `<g data-part="wafer">${wf.over}</g>`, play: playCover };
+    const sc = towerScene({ G: 870, gTo: 780, left: -90, main: { x: 210, y: 870, s: 1 },
+      far: [{ x: 560, y: 858, s: 0.42 }, { x: 690, y: 850, s: 0.24 }, { x: 762, y: 846, s: 0.14 }] });
+    const ax = 360, ay = 210;            // top-right cross-arm tip of the main tower
+    const dA = [790, 56], dB = [790, 452];
+    let b = `<g data-part="scene">${sc.body}</g>`;
+    b += `<g data-part="lead">${circ(ax + 18, ay - 18, 11)}${txt(ax + 18, ay - 14, 'A', 'middle')}` +
+      dsh(`M${ax + 29} ${ay - 22}L${dA[0]} ${dA[1]}M${ax + 26} ${ay - 10}L${dA[0]} ${dA[1] + 330}`, 'light') + `</g>`;
+    b += `<g data-part="detA">${insulatorDetail(dA[0], dA[1])}${txt(dA[0], dA[1] + 354, 'DETAIL A · SUSPENSION STRING', 'start', 'cap')}</g>`;
+    const ph = phasorParts(dB[0] + 66, dB[1] + 112, 50, dB[0] + 134, dB[0] + 286, 112, dB[1] + 238);
+    b += `<g data-part="detB">${box(dB[0], dB[1], 300, 330)}${ph.body}${txt(dB[0], dB[1] + 354, 'DETAIL B · THREE-PHASE VOLTAGES', 'start', 'cap')}</g>`;
+    b += txt(420, 896, 'FIG. I · DOUBLE-CIRCUIT LATTICE TOWER, ELEVATION', 'start', 'cap');
+    return { w: 1120, h: 900, body: b, over: ph.over, play: playCover };
   };
 
   F.coverTall = () => {
-    const wf = waferParts(360, 400, 340, 40, [2, -4]);
-    let b = `<g data-part="wafer">${wf.body}</g>` + txt(30, 790, 'FIG. 1 — 300 MM SILICON WAFER', 'start', 'cap');
-    return { w: 720, h: 800, body: b, over: `<g data-part="wafer">${wf.over}</g>`, play: (svg, tl) => { playWafer(svg, tl, 0, part(svg, 'wafer')); } };
+    const sc = towerScene({ G: 770, gTo: 720, left: -60, main: { x: 250, y: 770, s: 0.9 },
+      far: [{ x: 520, y: 760, s: 0.4 }, { x: 630, y: 753, s: 0.22 }, { x: 690, y: 749, s: 0.12 }] });
+    const b = `<g data-part="scene">${sc.body}</g>` + txt(30, 796, 'FIG. I · LATTICE TOWER, ELEVATION', 'start', 'cap');
+    return { w: 720, h: 800, body: b, play: (svg, tl) => {
+      playTowerScene(svg, tl, 0, part(svg, 'scene').art);
+      add(tl, q(svg.querySelector('.art'), ':scope > .lbl'), { opacity: [0, 1], duration: 900, easing: 'linear' }, 2400);
+    } };
   };
 
   /* ---------- rendering ---------- */
@@ -377,9 +459,7 @@
   const defs = u => `<defs>
     <pattern id="m-${u}" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path class="hatch" d="M0 0V6"/></pattern>
     <pattern id="p-${u}" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><path class="hatch" d="M0 0V4"/></pattern>
-    <pattern id="d-${u}" width="6" height="6" patternUnits="userSpaceOnUse"><circle class="hatch-dot" cx="3" cy="3" r="0.9"/></pattern>
-    <linearGradient id="scan-${u}" x1="0" x2="1" y1="0" y2="0">
-      <stop offset="0" class="sc0"/><stop offset=".7" class="sc1"/><stop offset="1" class="sc0"/></linearGradient></defs>`;
+    <pattern id="d-${u}" width="6" height="6" patternUnits="userSpaceOnUse"><circle class="hatch-dot" cx="3" cy="3" r="0.9"/></pattern></defs>`;
 
   function render(svg, name) {
     name = name || svg.dataset.fig;
@@ -393,11 +473,12 @@
     svg.dataset.drawn = '';
     if (reduce || !window.anime) return;
     svg.querySelectorAll('.ln').forEach(el => {
+      if (el.closest('.nodraw')) return;
       const L = el.getTotalLength() + 1;
       el.style.strokeDasharray = L;
       el.style.strokeDashoffset = L;
     });
-    svg.querySelectorAll('.lbl,.dot,.fill,.dsh,.hl,.scan').forEach(el => { el.style.opacity = 0; });
+    svg.querySelectorAll('.lbl,.dot,.fill,.dsh,.phasor,.nodraw').forEach(el => { el.style.opacity = 0; });
   }
 
   /* ---------- choreography ---------- */
@@ -419,42 +500,6 @@
     svg._after.push(() => pulses(svg, scope.art, { n: 2, dur: 3600 }));
   }
 
-  function playWafer(svg, tl, t0, scope) {
-    const art = scope.art;
-    add(tl, q(art, '.edge'), { strokeDashoffset: drawIn, duration: 1400, easing: 'easeInOutCubic' }, t0);
-    add(tl, q(art, '.ln:not(.edge):not(.die)'), { strokeDashoffset: drawIn, duration: 700, easing: 'easeOutQuad' }, t0 + 900);
-    add(tl, q(art, '.dsh'), { opacity: [0, 1], duration: 900, easing: 'linear' }, t0 + 300);
-    add(tl, q(art, '.die'), { strokeDashoffset: drawIn, duration: 520, delay: el => +el.dataset.d * 2.4, easing: 'easeOutQuad' }, t0 + 600);
-    add(tl, q(art, '.lbl'), { opacity: [0, 1], duration: 700, easing: 'linear' }, t0 + 1400);
-    add(tl, q(scope.over, '.hl'), { opacity: [0, 1], duration: 700, easing: 'easeOutQuad' }, t0 + 1900);
-    svg._after.push(() => {
-      const hl = q(scope.over, '.hl'), scan = q(scope.over, '.scan');
-      if (hl.length) anime({ targets: hl, opacity: [1, 0.35], duration: 1300, direction: 'alternate', loop: true, easing: 'easeInOutSine' });
-      scan.forEach(r => anime({
-        targets: r, opacity: [{ value: 1, duration: 300 }, { value: 1, duration: 3800 }, { value: 0, duration: 300 }],
-        translateX: [0, +r.dataset.span], duration: 4400, easing: 'linear', loop: true, endDelay: 1600
-      }));
-    });
-    return t0 + 2400;
-  }
-
-  function playStack(svg, tl, t0, scope) {
-    const art = scope.art, layers = q(art, '.layer');
-    anime.set(layers, { opacity: 0 });
-    add(tl, q(art, ':scope > .dsh, :scope > g > .dsh'), { opacity: [0, 1], duration: 900, easing: 'linear' }, t0);
-    layers.forEach((L, i) => {
-      const t = t0 + i * 280;
-      tl.add({ targets: L, opacity: [0, 1], translateY: [-38, 0], duration: 900, easing: 'easeOutCubic' }, t);
-      add(tl, q(L, '.ln'), { strokeDashoffset: drawIn, duration: 800, easing: 'easeInOutSine' }, t);
-      add(tl, q(L, '.fill,.lbl'), { opacity: [0, 1], duration: 600, easing: 'linear' }, t + 450);
-    });
-    svg._after.push(() => anime({
-      targets: layers, translateY: (el, i) => [0, -i * 5], duration: 2800,
-      direction: 'alternate', loop: true, easing: 'easeInOutSine'
-    }));
-    return t0 + layers.length * 280 + 900;
-  }
-
   function playGrid(svg, tl, t0, scope) {
     const art = scope.art;
     add(tl, q(art, '.g-ground .ln'), { strokeDashoffset: drawIn, duration: 1400, easing: 'easeInOutQuad' }, t0);
@@ -472,13 +517,53 @@
     return t0 + 3600;
   }
 
+  function playTowerScene(svg, tl, t0, art) {
+    const main = art.querySelector('.g-main');
+    add(tl, q(art, '.g-ground .ln'), { strokeDashoffset: drawIn, duration: 1400, easing: 'easeInOutQuad' }, t0);
+    add(tl, q(main, '.ln:not(.thin)'), { strokeDashoffset: drawIn, duration: 1600, delay: anime.stagger(80), easing: 'easeInOutSine' }, t0 + 200);
+    add(tl, q(main, '.ln.thin'), { strokeDashoffset: drawIn, duration: 1900, delay: anime.stagger(120), easing: 'easeInOutSine' }, t0 + 600);
+    add(tl, q(art, '.g-far'), { opacity: [0, 1], duration: 1400, easing: 'linear' }, t0 + 1300);
+    add(tl, q(art, '.g-cond .ln'), { strokeDashoffset: drawIn, duration: 2300, delay: anime.stagger(90), easing: 'easeInOutQuad' }, t0 + 1800);
+    add(tl, q(art, '.lbl'), { opacity: [0, 1], duration: 800, easing: 'linear' }, t0 + 2600);
+    svg._after.push(() => pulses(svg, art, { n: 2, dur: 6000 }));
+    return t0 + 4000;
+  }
+
+  function spinPhasors(svg) {
+    q(svg, '.phasor').forEach(g => {
+      const cx = +g.dataset.cx, cy = +g.dataset.cy, A = +g.dataset.a, P = +g.dataset.p;
+      const waves = q(g, '.wave'), projs = q(g, '.proj'), lines = q(g, '.phl'), tips = q(g, '.tip');
+      const o = { t: 0 };
+      anime({
+        targets: o, t: [0, 1], duration: 3600, easing: 'linear', loop: true,
+        update: () => {
+          const th = o.t * 2 * Math.PI, d = (o.t * P).toFixed(2);
+          PH.forEach((ph, i) => {
+            const x = (cx + A * Math.cos(ph + th)).toFixed(1), y = (cy - A * Math.sin(ph + th)).toFixed(1);
+            lines[i].setAttribute('x2', x); lines[i].setAttribute('y2', y);
+            tips[i].setAttribute('cx', x); tips[i].setAttribute('cy', y);
+            projs[i].setAttribute('x1', x); projs[i].setAttribute('y1', y); projs[i].setAttribute('y2', y);
+            waves[i].setAttribute('transform', `translate(${d} 0)`);
+          });
+        }
+      });
+    });
+  }
+
+  function playPhasor(svg, tl, t0, scope) {
+    playGeneric(svg, tl, t0, scope, { duration: 900 });
+    add(tl, q(svg, '.phasor'), { opacity: [0, 1], duration: 900, easing: 'linear' }, t0 + 700);
+    svg._after.push(() => spinPhasors(svg));
+  }
+
   function playCover(svg, tl) {
-    const t1 = playWafer(svg, tl, 0, part(svg, 'wafer'));
-    playGeneric(svg, tl, t1 - 600, part(svg, 'lead'), { duration: 700 });
-    playGeneric(svg, tl, t1 - 300, part(svg, 'mag'), { duration: 1000, stagger: 10 });
-    playStack(svg, tl, t1 + 500, part(svg, 'stack'));
-    add(tl, q(svg.querySelector('.art'), ':scope > .lbl'), { opacity: [0, 1], duration: 800, easing: 'linear' }, t1);
-    add(tl, q(part(svg, 'stack').art, ':scope > .lbl'), { opacity: [0, 1], duration: 800, easing: 'linear' }, t1 + 2400);
+    playTowerScene(svg, tl, 0, part(svg, 'scene').art);
+    playGeneric(svg, tl, 2400, part(svg, 'lead'), { duration: 700 });
+    playGeneric(svg, tl, 2700, part(svg, 'detA'), { duration: 900, stagger: 16 });
+    playGeneric(svg, tl, 3300, part(svg, 'detB'), { duration: 900, stagger: 20 });
+    add(tl, q(svg, '.phasor'), { opacity: [0, 1], duration: 900, easing: 'linear' }, 4000);
+    add(tl, q(svg.querySelector('.art'), ':scope > .lbl'), { opacity: [0, 1], duration: 900, easing: 'linear' }, 2600);
+    svg._after.push(() => spinPhasors(svg));
   }
 
   /* current pulses that travel along any .flow / .flowln path, forever */
