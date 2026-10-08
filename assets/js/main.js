@@ -3,49 +3,45 @@
   'use strict';
 
   const PAGES = [
-    { n: '', href: 'contents.html', title: 'Contents' },
-    { n: 'I', href: 'about.html', title: 'Introduction' },
-    { n: 'II', href: 'experience.html', title: 'Experience' },
-    { n: 'III', href: 'resume.html', title: 'Résumé' },
-    { n: 'IV', href: 'gen-ed.html', title: 'Gen Ed Reflection' },
-    { n: 'V', href: 'cumulative.html', title: 'Cumulative Reflection' },
-    { n: 'VI', href: 'ethics.html', title: 'Ethics Paper' }
+    { href: '#contents', title: 'Contents' },
+    { href: '#introduction', title: 'Introduction' },
+    { href: '#projects', title: 'Projects' },
+    { href: '#experience', title: 'Experience' },
+    { href: 'resume.html', title: 'Résumé' },
+    { href: '#reflections', title: 'Reflections' },
+    { href: '#contact', title: 'Contact' }
   ];
   const reduce = false; // see note in schematic.js
-  const here = location.pathname.split('/').pop() || 'index.html';
-  const idx = PAGES.findIndex(p => p.href === here);
+  const page = location.pathname.split('/').pop() || 'index.html';
+  const onHome = page === 'index.html';
+  // section links point into the home page when we're on a separate page
+  const link = href => href.startsWith('#') && !onHome ? 'index.html' + href : href;
 
   /* ---------- nav ---------- */
   const top = document.querySelector('[data-topbar]');
   if (top) {
     top.className = 'topbar';
     top.innerHTML = `<div class="wrap topbar-in">
-      <a class="brand" href="index.html">Truong Luu</a>
+      <a class="brand" href="${onHome ? '#' : 'index.html'}">Truong Luu</a>
       <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
-      <nav id="site-nav" class="nav" aria-label="Portfolio">
-        ${PAGES.map(p => `<a href="${p.href}"${p.href === here ? ' aria-current="page"' : ''}>${p.title}</a>`).join('')}
+      <nav id="site-nav" class="nav" aria-label="Portfolio" data-track>
+        ${PAGES.map(p => `<a href="${link(p.href)}"${p.href === page ? ' aria-current="page"' : ''}>${p.title}</a>`).join('')}
       </nav></div>`;
     const btn = top.querySelector('.menu-btn');
-    btn.addEventListener('click', () => {
-      const open = btn.getAttribute('aria-expanded') !== 'true';
+    const setOpen = open => {
       btn.setAttribute('aria-expanded', open);
       top.classList.toggle('open', open);
-    });
+    };
+    btn.addEventListener('click', () => setOpen(btn.getAttribute('aria-expanded') !== 'true'));
+    top.querySelectorAll('.nav a').forEach(a => a.addEventListener('click', () => setOpen(false)));
   }
 
-  /* ---------- footer with prev / next sheet ---------- */
+  /* ---------- footer ---------- */
   const foot = document.querySelector('[data-footer]');
   if (foot) {
-    const prev = idx > 0 ? PAGES[idx - 1] : { n: '', href: 'index.html', title: 'Cover' };
-    const label = p => p.n ? `Part ${p.n}` : (p.href === 'index.html' ? 'Front' : 'Index');
-    const next = idx >= 0 && idx < PAGES.length - 1 ? PAGES[idx + 1] : null;
     foot.className = 'footer';
     foot.innerHTML = `<div class="wrap">
-      <div class="pager">
-        <a class="pg prev" href="${prev.href}"><small>← ${label(prev)}</small>${prev.title}</a>
-        ${next ? `<a class="pg next" href="${next.href}"><small>${label(next)} →</small>${next.title}</a>` : '<span></span>'}
-      </div>
-      <div class="colophon"><span>Truong Hoai An Luu</span><span>Electrical Engineering Portfolio · Iowa State University · MMXXVII</span></div>
+      <div class="colophon"><span>Truong Hoai An Luu</span><span>Electrical Engineering Portfolio</span></div>
     </div>`;
   }
 
@@ -78,21 +74,24 @@
     figs.forEach(svg => io.observe(svg));
   }
 
-  /* ---------- in-page section tracker (sub-nav + doc TOC) ---------- */
-  const tracked = document.querySelectorAll('[data-track] a[href^="#"]');
-  if (tracked.length && 'IntersectionObserver' in window) {
-    const map = new Map();
-    tracked.forEach(a => {
-      const t = document.querySelector(a.getAttribute('href'));
-      if (t) map.set(t, a);
-    });
-    const so = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (!e.isIntersecting) return;
-        tracked.forEach(a => a.classList.remove('active'));
-        map.get(e.target).classList.add('active');
+  /* ---------- section trackers (top nav, sub-navs, doc TOCs) ---------- */
+  if ('IntersectionObserver' in window) {
+    document.querySelectorAll('[data-track]').forEach(group => {
+      const links = [...group.querySelectorAll('a[href^="#"]')].filter(a => a.getAttribute('href').length > 1);
+      const map = new Map();
+      links.forEach(a => {
+        const t = document.querySelector(a.getAttribute('href'));
+        if (t) map.set(t, a);
       });
-    }, { rootMargin: '-30% 0px -60% 0px' });
-    map.forEach((_, t) => so.observe(t));
+      if (!map.size) return;
+      const so = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (!e.isIntersecting) return;
+          links.forEach(a => a.classList.remove('active'));
+          map.get(e.target).classList.add('active');
+        });
+      }, { rootMargin: '-30% 0px -60% 0px' });
+      map.forEach((_, t) => so.observe(t));
+    });
   }
 })();

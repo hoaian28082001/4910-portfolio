@@ -206,7 +206,7 @@
   /* --- magnified suspension insulator string --- */
   function insulatorDetail(bx, by) {
     const cx = bx + 130, cy = by + 292;
-    let b = box(bx, by, 300, 330);
+    let b = box(bx, by, 300, 330, 'face');
     let web = `M${bx + 20} ${by + 44}`;
     for (let x = bx + 40, up = true; x <= bx + 280; x += 20, up = !up) web += `L${x} ${by + (up ? 24 : 44)}`;
     b += ln(`M${bx + 20} ${by + 24}H${bx + 280}M${bx + 20} ${by + 44}H${bx + 280}`) + ln(web, 'thin');
@@ -427,8 +427,9 @@
 
   /* --- cover: a transmission line in elevation → detail A (insulator string) + detail B (phasors) --- */
   F.cover = () => {
-    const sc = towerScene({ G: 870, gTo: 780, left: -90, main: { x: 210, y: 870, s: 1 },
-      far: [{ x: 560, y: 858, s: 0.42 }, { x: 690, y: 850, s: 0.24 }, { x: 762, y: 846, s: 0.14 }] });
+    // far towers stop ~30 units short of the detail boxes (x 790) so no arm or leg touches them
+    const sc = towerScene({ G: 870, gTo: 760, left: -90, main: { x: 210, y: 870, s: 1 },
+      far: [{ x: 540, y: 858, s: 0.42 }, { x: 662, y: 850, s: 0.24 }, { x: 730, y: 846, s: 0.14 }] });
     const ax = 360, ay = 210;            // top-right cross-arm tip of the main tower
     const dA = [790, 56], dB = [790, 452];
     let b = `<g data-part="scene">${sc.body}</g>`;
@@ -436,7 +437,7 @@
       dsh(`M${ax + 29} ${ay - 22}L${dA[0]} ${dA[1]}M${ax + 26} ${ay - 10}L${dA[0]} ${dA[1] + 330}`, 'light') + `</g>`;
     b += `<g data-part="detA">${insulatorDetail(dA[0], dA[1])}${txt(dA[0], dA[1] + 354, 'DETAIL A · SUSPENSION STRING', 'start', 'cap')}</g>`;
     const ph = phasorParts(dB[0] + 66, dB[1] + 112, 50, dB[0] + 134, dB[0] + 286, 112, dB[1] + 238);
-    b += `<g data-part="detB">${box(dB[0], dB[1], 300, 330)}${ph.body}${txt(dB[0], dB[1] + 354, 'DETAIL B · THREE-PHASE VOLTAGES', 'start', 'cap')}</g>`;
+    b += `<g data-part="detB">${box(dB[0], dB[1], 300, 330, 'face')}${ph.body}${txt(dB[0], dB[1] + 354, 'DETAIL B · THREE-PHASE VOLTAGES', 'start', 'cap')}</g>`;
     b += txt(420, 896, 'FIG. I · DOUBLE-CIRCUIT LATTICE TOWER, ELEVATION', 'start', 'cap');
     return { w: 1120, h: 900, body: b, over: ph.over, play: playCover };
   };
