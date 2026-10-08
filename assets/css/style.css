@@ -391,8 +391,15 @@ main::before {
 .doc-body { max-width: 720px; min-width: 0; }
 .doc-body section { padding: 0 0 56px; }
 .doc-body section + section { padding-top: 52px; border-top: 1px solid var(--hair-2); }
-.doc-body h2 { font-size: clamp(22px, 2.4vw, 28px); margin-bottom: 22px; }
-.doc-body h2 .n { display: block; font: 400 34px/1 var(--serif); color: #3a3a3a; margin-bottom: 14px; letter-spacing: 0; font-variant-numeric: lining-nums; }
+.doc-body h2, .doc-body h3 { font-size: clamp(22px, 2.4vw, 28px); margin-bottom: 22px; }
+.doc-body h2 .n, .doc-body h3 .n { display: block; font: 400 34px/1 var(--serif); color: #3a3a3a; margin-bottom: 14px; letter-spacing: 0; font-variant-numeric: lining-nums; }
+.doc-body h4 { font: 500 12.5px var(--serif); letter-spacing: .24em; color: var(--muted); margin: 34px 0 14px; }
+.doc-body ul { margin: 0 0 1em; padding-left: 1.1em; color: var(--ink-2); }
+.doc-body li { margin-bottom: 8px; }
+.doc-body li::marker { content: '— '; color: var(--muted); }
+.essay { margin: 0 auto; }
+.doc-pdf { text-align: center; margin: clamp(36px, 5vw, 56px) 0 0; }
+@media (max-width: 560px) { .doc-body p { text-align: left; } }
 .doc-body p { color: var(--ink-2); text-align: justify; hyphens: auto; }
 @media (max-width: 860px) { .doc { grid-template-columns: 1fr; } .doc-toc { position: static; } }
 
