@@ -9,8 +9,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=26">
-<script>document.documentElement.classList.add('js')</script>
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="assets/css/style.css?v=30">
+<script>(function (d) { d.classList.add('js'); try { var t = localStorage.getItem('theme'); if (t) d.dataset.theme = t; } catch (e) {} })(document.documentElement)</script>
 </head>
 <body class="cover">
   <section class="cover-hero">
@@ -56,10 +57,10 @@
     <div data-reveal>
       <p class="numeral">I</p>
       <h1>Hello, I'm Truong.</h1>
-      <p class="lede">I'm a senior in Electrical Engineering at Iowa State University, graduating in May 2027.
-        Welcome to my portfolio. My work spans two fields: power systems, where energy is generated, carried
-        and protected, and VLSI, where circuits are designed down to the transistor. These pages collect the projects, the internship and the reflections
-        that trace how I've grown as an engineer.</p>
+      <p class="lede">I'm a senior in Electrical Engineering at Iowa State University, graduating in May 2027. My main
+        interest is power systems, where electrical energy is generated, delivered, and protected, and I also enjoy VLSI,
+        where individual transistors come together to form integrated circuits. This portfolio shows what I've learned,
+        how I've grown, and the engineer I'm working to become.</p>
     </div>
   </section>
 
@@ -67,7 +68,8 @@
   <section class="section" id="milestones">
     <div class="wrap">
       <div class="glance" data-reveal data-stagger>
-        <div><span class="big">May 2027</span><p>B.S. Electrical Engineering, Iowa State University. A.S. from Des Moines Area Community College, 2024.</p></div>
+        <div><span class="big">May 2027</span><p>B.S. Electrical Engineering, Iowa State University.</p></div>
+        <div><span class="big">2024</span><p>A.S., Des Moines Area Community College (DMACC).</p></div>
         <div><span class="big">Summer 2026</span><p>Quality Engineering Intern at Electrical Power Products (EP2), Des Moines.</p></div>
         <div><span class="big">Dec 29, 2026</span><p>FE Electrical &amp; Computer exam: the first step toward a Professional Engineer license.</p></div>
       </div>
@@ -81,19 +83,19 @@
         <div class="section-head"><h2>Career objective</h2></div>
       </div>
       <div class="body" data-reveal>
-        <p class="lead">I want to build a career in power systems, where reliability is the whole point and the grid people depend on keeps standing.</p>
-        <p>A protective relay has to trip within a few cycles. A transmission line has to carry power through storms,
-          heat waves and faults. I'm drawn to systems like these, which people depend on without ever having to think
-          about them.</p>
-        <p>My internship at EP2 put me beside the relay panels utilities install in their substations, and showed me how
-          much careful testing and documentation stands between a design and a grid that works. Courses in power system
-          analysis, power planning and power electronics, and simulating converter systems in PLECS, gave me the theory
-          behind what I saw on the test floor. Designing an integrated circuit in Cadence taught me to be just as careful
-          at the transistor level.</p>
-        <p>After graduation I'm looking for a full-time role in power systems, protection or power electronics, where I can
-          learn from experienced engineers and take real ownership of hardware. I'll sit for the FE exam this December and
-          work toward my PE license. Over the long term I want to help build the more electric, more renewable grid that's
-          coming.</p>
+        <p class="lead">My objective is to have a career in the power systems industry. My interest in this career stems
+          from the fact that the work will be applied in our daily lives without most of us knowing.</p>
+        <p>During my internship at Electrical Power Products (EP2), I was able to gain hands-on experience in relay panels,
+          electrical testing, and work instructions for the equipment used in utility substations. This helped me to see the
+          importance of proper testing and documentation in ensuring the reliability of the power equipment. The courses I
+          took in power system analysis, power planning, and power electronics gave me knowledge of the theories and
+          applications. My experience working with converter simulations in PLECS and integrated circuit design in Cadence
+          improved my problem-solving skills.</p>
+        <p>Following my graduation in May 2027, my career objective will be to have a job in power systems, protection, or
+          power electronics. I hope to be mentored by other engineers while undertaking more responsibilities in engineering
+          projects. I am scheduled to sit for the FE exam in December 2026 and work towards acquiring the PE license. In the
+          future, I would like to help build a reliable grid that will satisfy the increasing demands of electricity supply
+          and integration of renewables.</p>
       </div>
     </div>
   </section>
@@ -103,7 +105,8 @@
     <div class="wrap">
       <div class="section-head" data-reveal>
         <h2>Focus areas</h2>
-        <p>Two fields, held with equal weight: power systems at the scale of the grid, and integrated circuits at the scale of the transistor.</p>
+        <p>My primary focus is power systems, complemented by an interest in VLSI and integrated circuit design, from
+          delivering and protecting electricity across the grid to designing circuits at the transistor level.</p>
       </div>
       <div class="focus" data-reveal data-stagger>
         <article>
@@ -111,18 +114,23 @@
           <div class="txt">
             <p class="kicker">Power</p>
             <h3>Power systems &amp; power electronics</h3>
-            <p>Power System Analysis, Economic Systems for Electric Power Planning, and Energy Systems &amp; Power Electronics.
-              I've simulated converter systems in PLECS, and at EP2 I tested protective relay panels with Omicron test sets
-              and SEL and GE relays.</p>
+            <p>I am focused on finding out how electrical energy is transmitted, changed, and safeguarded. My studies and
+              simulation of converters with PLECS help me connect power system theory with how circuits work in the real
+              world. I solidified my knowledge during my internship at Electrical Power Products (EP2), where I tested the
+              protective relay panels with the help of Omicron, SEL, and GE relays.</p>
+            <p class="coursework"><b>Related coursework</b> Power System Analysis · Economic Systems for Electric Power Planning · Energy Systems &amp; Power Electronics</p>
           </div>
         </article>
         <article>
-          <div class="fig"><svg class="sch" data-fig="inverter" role="img" aria-label="CMOS inverter schematic"></svg></div>
+          <div class="fig"><svg class="sch" data-fig="cmos" role="img" aria-label="Animated CMOS inverter: as the input switches between 1 and 0, the PMOS or NMOS transistor conducts and the output switches the opposite way, traced as input and output waveforms"></svg></div>
           <div class="txt">
             <p class="kicker">VLSI</p>
             <h3>CMOS &amp; integrated circuits</h3>
-            <p>Integrated Electronic &amp; Circuit Systems and Microelectronics Fabrication. I've done full-custom design in Cadence
-              Virtuoso, from transistor-level schematics to verified layout.</p>
+            <p>The other important thing that I have worked on is the design of integrated circuits. In Cadence Virtuoso, I was
+              able to learn how to make schematics and do simulations and layouts. Creating a digital potentiometer taught me
+              how various components combine to make an entire circuit. The microelectronics fabrication courses are helping
+              me understand how the designs are created.</p>
+            <p class="coursework"><b>Related coursework</b> Integrated Electronics &amp; Circuit Systems · Microelectronics Fabrication</p>
           </div>
         </article>
       </div>
@@ -139,83 +147,107 @@
     </div>
   </section>
 
-  <nav class="subnav" data-track aria-label="Projects">
+  <section class="section" style="border-top:0">
     <div class="wrap">
-      <a href="#senior-design">Senior Design</a>
-      <a href="#course-projects">Course Projects</a>
-    </div>
-  </nav>
-
-  <!-- ================= SENIOR DESIGN ================= -->
-  <section class="section" id="senior-design" style="border-top:0">
-    <div class="wrap">
-      <div class="section-head" data-reveal>
-        <h2>Senior Design</h2>
+      <div class="picker" role="tablist" aria-label="Projects" data-picker data-reveal>
+        <button class="pick featured" type="button" role="tab" id="tab-sd" aria-controls="senior-design" aria-selected="false">
+          <span class="pick-num">SD</span>
+          <span class="pick-k">Senior Design · EE 4910 / 4920</span>
+          <span class="pick-t">Eddy Current Probe for Conductivity Measurement</span>
+          <span class="pick-m">Fall 2026 – Spring 2027 · Team of 6</span>
+        </button>
+        <button class="pick" type="button" role="tab" id="tab-230" aria-controls="temp-indicator" aria-selected="false">
+          <span class="pick-num">I</span>
+          <span class="pick-k">Project I · EE 230</span>
+          <span class="pick-t">Temperature Indicator Circuit</span>
+          <span class="pick-m">Spring 2025 · Team of 3</span>
+        </button>
+        <button class="pick" type="button" role="tab" id="tab-3030" aria-controls="plecs" aria-selected="false">
+          <span class="pick-num">II</span>
+          <span class="pick-k">Project II · EE 3030</span>
+          <span class="pick-t">Three-Phase Energy System Simulation</span>
+          <span class="pick-m">Fall 2025 · PLECS</span>
+        </button>
+        <button class="pick" type="button" role="tab" id="tab-330" aria-controls="programmable-ic" aria-selected="false">
+          <span class="pick-num">III</span>
+          <span class="pick-k">Project III · EE 330</span>
+          <span class="pick-t">Digital Potentiometer &amp; Programmable Amplifier IC</span>
+          <span class="pick-m">Spring 2026 · Cadence Virtuoso</span>
+        </button>
       </div>
+      <p class="pick-hint">Choose a project above to open it.</p>
 
-      <article class="proj featured" data-reveal>
+      <div class="panels">
+      <!-- ================= SENIOR DESIGN ================= -->
+      <article class="proj" id="senior-design" role="tabpanel" aria-labelledby="tab-sd">
         <header class="proj-head">
-          <p class="kicker"><b>Senior Design</b> · Project 18 · EE 4910 / 4920</p>
           <h3>Eddy Current Probe for Conductivity Measurement</h3>
-          <p class="meta">Fall 2026 – Spring 2027 · Team of 6 · Faculty advisor: Dr. Jiming Song</p>
+          <p class="meta">EE 4910 / 4920 · Project 18 · Fall 2026 – Spring 2027 · Team sdmay27-18 (6 members) · Advisor: Dr. Jiming Song · Client: Dr. Mingyang Lu, CNDE</p>
         </header>
         <div class="proj-body">
           <figure class="proj-fig">
             <svg class="sch" data-fig="ecprobe" role="img" aria-label="Eddy-current probe coil above a conductive sample, showing magnetic field lines and induced eddy currents"></svg>
-            <figcaption>Fig. II.1 — AC coil, its field B, and the eddy currents it induces</figcaption>
+            <a class="shot" href="assets/img/senior-design-concept.webp" target="_blank" rel="noopener">
+              <img src="assets/img/senior-design-concept.webp" alt="Concept illustration: a vector network analyzer drives a copper pancake coil held a small distance above a metal sample; the coil's changing magnetic field induces eddy currents in the metal, whose response field changes the coil impedance" loading="lazy" width="1010" height="438">
+            </a>
           </figure>
           <dl class="spec">
             <div><dt>Description</dt><dd>
-              <p>Our six-member team is developing an eddy current probe to measure the electrical conductivity of metals
-                without damaging the sample. An alternating current in the probe's coil produces a changing magnetic field
-                that induces eddy currents in a nearby metal. These currents affect the coil's electrical impedance. By
-                measuring this response and comparing it with reference samples, the system aims to estimate the metal's
-                conductivity.</p>
+              <p>A team of six members is developing an eddy current probe that will allow the measurement of electrical
+                conductivity in metals without damaging the sample. The coil of the probe generates an oscillating magnetic
+                field which induces eddy currents in the nearby metal. The produced eddy currents change the impedance of the
+                coil. The system is expected to measure the impedance change and to compare it to the corresponding values
+                obtained for reference samples to determine the conductivity of the tested metal.</p>
+              <p>The plan is to drive the coil from an affordable vector network analyzer (VNA). The VNA measures the reflection
+                coefficient S<sub>11</sub>, which gives the coil's input impedance, Z = Z<sub>0</sub>(1 + S<sub>11</sub>) / (1 − S<sub>11</sub>).
+                Calibrating that impedance against reference samples of known conductivity turns it into a conductivity
+                reading. The probe sits at a fixed lift-off of about 0.5–2 mm, set by a thin non-conductive spacer, so that
+                distance does not change the result.</p>
             </dd></div>
             <div><dt>My role</dt><dd>
-              <p>I help coordinate team activities, organize project tasks, and communicate with our faculty advisor. I also
-                contribute to researching the measurement method, developing circuit diagrams and calculations, and planning
-                prototype construction and laboratory testing. My electrical engineering background supports the team's
-                circuit analysis and interpretation of measurement results.</p>
+              <p>I help coordinate the team and organize the project since that is my responsibility. At this point, I am only
+                helping in a collaborative way by participating in discussions and researching together with my teammates.
+                We are gaining insights about the measurement principles. Subsequently, I will contribute to the circuit
+                analysis and prototyping of our project.</p>
+            </dd></div>
+            <div><dt>Progress so far</dt><dd>
+              <ul class="plain-list">
+                <li><b>Week 1</b>: Divided roles and agreed on a plan of attack before meeting our advisor.</li>
+                <li><b>Week 2</b>: Researched VNAs, coil types (air-core pancake and PCB coils) and impedance chips such as the AD5933.</li>
+                <li><b>Week 3</b>: First meeting with Dr. Song and Dr. Lu, who gave us an introduction to eddy current NDE and probe types.
+                  We ruled out the AD5933 and chose to process the VNA data in software on a laptop instead.</li>
+              </ul>
             </dd></div>
             <div><dt>Skills &amp; knowledge gained</dt><dd>
-              <p>Through this project, I am developing my understanding of electromagnetic induction, eddy currents, and the
-                relationship between conductivity and coil impedance. I am also strengthening my skills in circuit design,
-                experimental planning, technical documentation, teamwork, and project coordination. As development
-                progresses, I will gain additional experience in prototype testing, calibration, and evaluating measurement
-                accuracy.</p>
+              <p>I have learned about electromagnetic induction, eddy current, and coil impedance. In addition, this project will
+                help me develop my skills in designing circuits, designing experiments, writing reports, and teamwork. I will
+                also gain more experience in prototype testing, calibration, and measurement accuracy as the work
+                progresses.</p>
             </dd></div>
             <div><dt>Supporting documents</dt><dd>
               <ul class="doclinks">
-                <li><a class="todo-link" href="#"><span>Project proposal &amp; problem statement</span><span>add link</span></a></li>
-                <li><a class="todo-link" href="#"><span>Requirements &amp; engineering standards</span><span>add link</span></a></li>
-                <li><a class="todo-link" href="#"><span>Circuit diagrams &amp; design calculations</span><span>add link</span></a></li>
-                <li><a class="todo-link" href="#"><span>Weekly reports &amp; design presentations</span><span>add link</span></a></li>
+                <li><a href="assets/docs/EE4910_Project_Calendar.pdf" target="_blank" rel="noopener"><span>12-week project calendar</span><span>PDF</span></a></li>
+                <li><a href="assets/docs/EE4910_Research_Notes.pdf" target="_blank" rel="noopener"><span>Research notes: S<sub>11</sub> to conductivity, lift-off, process flow</span><span>PDF</span></a></li>
+                <li><a href="assets/docs/EE4910_Weekly_Report_1.pdf" target="_blank" rel="noopener"><span>Weekly report 1 · Sept 16–22</span><span>PDF</span></a></li>
+                <li><a href="assets/docs/EE4910_Weekly_Report_2.pdf" target="_blank" rel="noopener"><span>Weekly report 2 · Sept 22–29</span><span>PDF</span></a></li>
+                <li><a href="assets/docs/EE4910_Weekly_Report_3.pdf" target="_blank" rel="noopener"><span>Weekly report 3 · Sept 30 – Oct 6</span><span>PDF</span></a></li>
+                <li><a class="todo-link" href="#"><span>Current research, second document</span><span>add link</span></a></li>
+                <li><a class="todo-link" href="#"><span>Professor materials</span><span>add link</span></a></li>
                 <li><a class="todo-link" href="#"><span>Prototype photographs &amp; test results</span><span>as available</span></a></li>
               </ul>
             </dd></div>
             <div><dt>Big-picture contribution</dt><dd>
-              <p>This project applies electromagnetic principles to a practical, nondestructive measurement tool. The intended
-                system could support material identification and quality assessment by measuring conductivity while
-                preserving the sample. My contribution helps connect the team's research, circuit development, and testing
-                plans toward a working prototype.</p>
+              <p>The project uses electromagnetic principles for a measurement tool that does not break the sample. The goal of
+                the system is to determine material type and quality through conductivity measurement that does not alter the
+                sample. I have contributed to tying together the team's ideas regarding research, circuit building, and testing
+                plans for a real prototype.</p>
             </dd></div>
           </dl>
         </div>
       </article>
-    </div>
-  </section>
-
-  <!-- ================= COURSE PROJECTS ================= -->
-  <section class="section" id="course-projects">
-    <div class="wrap">
-      <div class="section-head" data-reveal>
-        <h2>Course Projects</h2>
-        <p>Three course projects: EE 230, EE 3030 and EE 330.</p>
-      </div>
 
       <!-- Project I -->
-      <article class="proj" id="temp-indicator" data-reveal>
+      <article class="proj" id="temp-indicator" role="tabpanel" aria-labelledby="tab-230">
         <header class="proj-head">
           <p class="kicker"><b>Project I</b> · EE 230 · Electronic Circuits &amp; Systems</p>
           <h3>Temperature Indicator Circuit</h3>
@@ -224,35 +256,32 @@
         <div class="proj-body">
           <figure class="proj-fig">
             <svg class="sch" data-fig="hyst" role="img" aria-label="Hysteresis loops: the orange LED turns on at 40 degrees Celsius when heating and off at 30 when cooling; the red LED turns on at 100 and off at 80"></svg>
-            <figcaption>Fig. II.2 — LED switching thresholds with hysteresis</figcaption>
             <a class="shot" href="assets/img/ee230-sketch.webp" target="_blank" rel="noopener">
               <img src="assets/img/ee230-sketch.webp" alt="Hand-drawn design sketch of the temperature indicator: the sensor voltage feeds three op-amp comparator stages set by a 0.9 V reference and a resistor divider, driving red, orange and green LEDs" loading="lazy" width="672" height="652">
             </a>
-            <figcaption>Hand-drawn comparator design sketch · click to enlarge</figcaption>
           </figure>
           <dl class="spec">
             <div><dt>Description</dt><dd>
-              <p>Our three-person team designed, simulated, and built a temperature indicator circuit using operational
-                amplifiers configured as comparators and three LEDs. The circuit was designed for an LM35 temperature sensor,
-                which produces a voltage proportional to temperature. During testing, we used a variable DC voltage source to
-                simulate the sensor output.</p>
-              <p>As temperature increased, the green LED turned off and the orange LED turned on at approximately 40 °C. Above
-                100 °C, the red LED also turned on. During cooling, the red LED remained on until the temperature dropped below
-                80 °C, while the orange LED remained on until below 30 °C, when the green LED turned back on. These different
-                switching thresholds provided hysteresis, helping prevent rapid switching near a temperature boundary.</p>
+              <p>Our three-member group designed a temperature indicator circuit using op-amps as comparators and three LEDs.
+                The circuit functions with an LM35 temperature sensor that provides a voltage output proportional to the
+                temperature. In order to test our design, we used a variable DC voltage source to simulate the output of the
+                temperature sensor.</p>
+              <p>With increasing temperature, the green LED went off, and the orange LED came on at around 40 °C. With further
+                increase in temperature beyond 100 °C, the red LED was also switched on. On cooling, the red LED remained on
+                until the temperature was below 80 °C, while the orange LED remained on until the temperature was below
+                30 °C, when the green LED was switched on again. This is the hysteresis effect.</p>
             </dd></div>
             <div><dt>My role</dt><dd>
-              <p>I worked with my teammates to develop the circuit design, determine resistor values and reference voltages,
-                and verify the LED switching behavior. I contributed to circuit simulation, breadboard construction, testing,
-                and documenting our design. Our team also resolved a reference-voltage loading issue that occurred when the
-                three comparator circuits were connected together by adjusting the voltage-divider resistors.</p>
+              <p>My team and I worked on the circuit design, the values of the resistors, and reference voltages, as well as
+                verifying that the LEDs switch. I was also part of circuit simulation, building the breadboard and testing the
+                circuit. I also documented the project. Our team solved the problem of loading a reference voltage when
+                connecting the three comparators by choosing suitable values of the voltage divider resistors.</p>
             </dd></div>
             <div><dt>Skills &amp; knowledge gained</dt><dd>
-              <p>This project strengthened my understanding of inverting and non-inverting comparators, positive feedback, and
-                hysteresis. I gained experience translating design requirements into voltage thresholds, selecting resistor
-                values, using LTspice to evaluate circuit behavior, and testing a physical prototype. Troubleshooting the
-                reference-voltage issue also helped me understand how connecting circuit stages can affect their
-                operation.</p>
+              <p>Through this project, I was able to learn more about inverting and non-inverting comparators, positive
+                feedback, and hysteresis. I was able to learn how to convert design specifications into voltages, select
+                appropriate resistors, verify the operation of the circuit using LTspice, and even test the actual prototype.
+                The problem with the reference voltage also taught me about the effect of connecting circuit stages.</p>
             </dd></div>
             <div><dt>Resources used</dt><dd>
               <p>We used LTspice for schematic development and simulation, a breadboard and EE 230 lab-kit components for
@@ -260,12 +289,18 @@
                 notes and Excel calculation spreadsheet supported our threshold calculations and resistor selection. We also
                 used the course's temperature indicator design requirements to guide the circuit's behavior and testing.</p>
             </dd></div>
+            <div><dt>Supporting documents</dt><dd>
+              <ul class="doclinks">
+                <li><a href="assets/docs/EE230_Final_Report.pdf" target="_blank" rel="noopener"><span>Lab report: Temperature Sensor LED Design</span><span>PDF</span></a></li>
+                <li><a href="assets/docs/EE230_Design_Sketches.pdf" target="_blank" rel="noopener"><span>Hand-drawn design sketches &amp; threshold table</span><span>PDF</span></a></li>
+              </ul>
+            </dd></div>
           </dl>
         </div>
       </article>
 
       <!-- Project II -->
-      <article class="proj" id="plecs" data-reveal>
+      <article class="proj" id="plecs" role="tabpanel" aria-labelledby="tab-3030">
         <header class="proj-head">
           <p class="kicker"><b>Project II</b> · EE 3030 · Energy Systems &amp; Power Electronics</p>
           <h3>Power Electronics and Three-Phase Energy System Simulation</h3>
@@ -274,19 +309,17 @@
         <div class="proj-body">
           <figure class="proj-fig">
             <svg class="sch" data-fig="pesys" role="img" aria-label="Block diagram: DC source, boost converter to a 1,500 volt DC bus, three-phase inverter, LC filter, transformer, transmission line and loads, with a buck converter supplying a 48 volt load"></svg>
-            <figcaption>Fig. II.3 — System modeled in PLECS</figcaption>
             <a class="shot" href="assets/img/plecs-model.webp" target="_blank" rel="noopener">
               <img src="assets/img/plecs-model.webp" alt="Screenshot of the PLECS model showing the source, boost converter, inverter, LC filter, step-up transformer, line, loads and measurement blocks" loading="lazy" width="1027" height="617">
             </a>
-            <figcaption>The PLECS model · click to enlarge</figcaption>
           </figure>
           <dl class="spec">
             <div><dt>Description</dt><dd>
-              <p>This project involved implementing and analyzing a power electronics system in PLECS. The model connected a DC
-                source and boost converter to a three-phase inverter, an LC filter, transformers, a transmission line, and
-                multiple loads. The boost converter regulated the DC bus around a nominal 1,500 V, while a downstream buck
-                converter supplied a nominal 48 V DC load. I examined voltage, current, and average-power waveforms at several
-                locations to evaluate how the system converted and delivered electrical energy.</p>
+              <p>This study was on designing and analyzing a power electronics system using PLECS. The system was connected
+                between a DC source and a boost converter and a three-phase inverter, L-C filter, transformers, transmission
+                lines, and various loads. The boost converter controlled the DC bus at around 1,500 volts, while the downstream
+                buck converter supplied 48 V DC. Waveforms of voltages, currents, and average powers were analyzed at various
+                points within the system to examine energy transfer.</p>
             </dd></div>
             <div><dt>My role</dt><dd>
               <p>I implemented the boost converter and three power electronics load subsystems within the course model,
@@ -307,12 +340,17 @@
                 for recording voltage, current, and power. The model incorporated switching devices, inductors, capacitors,
                 transformers, transmission-line elements, and measurement blocks.</p>
             </dd></div>
+            <div><dt>Supporting documents</dt><dd>
+              <ul class="doclinks">
+                <li><a href="assets/docs/EE3030_Final_Project_Report.pdf" target="_blank" rel="noopener"><span>Final project report with simulation traces</span><span>PDF</span></a></li>
+              </ul>
+            </dd></div>
           </dl>
         </div>
       </article>
 
       <!-- Project III -->
-      <article class="proj" id="programmable-ic" data-reveal>
+      <article class="proj" id="programmable-ic" role="tabpanel" aria-labelledby="tab-330">
         <header class="proj-head">
           <p class="kicker"><b>Project III</b> · EE 330 · Integrated Circuits</p>
           <h3>Digital Potentiometer and Programmable Amplifier Integrated Circuit</h3>
@@ -320,14 +358,10 @@
         </header>
         <div class="proj-body">
           <figure class="proj-fig">
-            <a class="shot" href="assets/img/ee330-potentiometer.webp" target="_blank" rel="noopener" style="margin-top:0">
-              <img src="assets/img/ee330-potentiometer.webp" alt="Cadence Virtuoso schematic of the digital potentiometer: a decoder block at the top left drives a column of sixteen switch cells along the resistor string, joined to a common output" loading="lazy" width="365" height="536">
-            </a>
-            <figcaption>Fig. II.4 — Digital potentiometer schematic in Cadence · click to enlarge</figcaption>
+            <svg class="sch" data-fig="digipot" role="img" aria-label="Animated 16-tap digital potentiometer: a 4-bit code steps up and down, closing one switch along the resistor string at a time, and the output level rises and falls with the selected tap"></svg>
             <a class="shot" href="assets/img/ee330-schematic.webp" target="_blank" rel="noopener">
               <img src="assets/img/ee330-schematic.webp" alt="Cadence Virtuoso top-level schematic of the final project: inverting and non-inverting amplifier blocks, the potentiometer and the DAC, all feeding a mode-select output block" loading="lazy" width="552" height="233">
             </a>
-            <figcaption>Top-level Cadence schematic · click to enlarge</figcaption>
           </figure>
           <dl class="spec">
             <div><dt>Description</dt><dd>
@@ -362,9 +396,15 @@
                 operational-amplifier design guide, transistor-parameter spreadsheets, and guidance from our instructor and
                 teaching assistants.</p>
             </dd></div>
+            <div><dt>Supporting documents</dt><dd>
+              <ul class="doclinks">
+                <li><a href="assets/docs/EE330_Final_Project_Report.pdf" target="_blank" rel="noopener"><span>Final project report: schematics, layout &amp; simulations</span><span>PDF</span></a></li>
+              </ul>
+            </dd></div>
           </dl>
         </div>
       </article>
+      </div>
     </div>
   </section>
   </div>
@@ -406,7 +446,6 @@
         </div>
         <figure>
           <svg class="sch" data-fig="scope" role="img" aria-label="Oscilloscope trace with a sine wave and a PWM square wave"></svg>
-          <figcaption>Fig. III.1 — Injected test signals, observed response</figcaption>
         </figure>
       </div>
 
@@ -480,21 +519,38 @@
     </div>
   </nav>
 
-  <section class="section" id="gen-ed" style="border-top:0">
+  <section class="section refl-sec" style="border-top:0; padding-top: 0">
     <div class="wrap">
-      <div class="section-head" data-reveal>
-        <h2>General Education Reflection</h2>
-      </div>
-    </div>
-  </section>
+      <article class="reflection" id="gen-ed">
+        <aside data-reveal>
+          <span class="sub-num">i.</span>
+          <h3>General Education</h3>
+          <p>How courses outside engineering shaped the way I look at engineering problems.</p>
+          <p class="refl-meta">ANTHR 230 · LD ST 322 · ECON 101 · SP CM 212</p>
+          <a class="btn ghost" href="assets/docs/Luu_General_Education_Reflection.pdf" target="_blank" rel="noopener">Read the PDF ↗</a>
+        </aside>
+        <div class="sheet doc-body" data-reveal>
+          <p class="sheet-run"><span>Truong Luu</span><span>General Education Reflection</span></p>
+          <p>Throughout my four years at Iowa State University, I found out that a successful electrical engineer is not limited to their engineering expertise. The classes in my engineering curriculum taught me how to analyze circuits and technical problems. Classes outside my engineering major allowed me to see the problem from other perspectives. They taught me that engineering decisions have impacts on people, societies, companies, and the environment. Thinking back, ANTHR 230, LD ST 322, ECON 101, and SP CM 212 were very useful in shaping my skills as an electrical engineer in the future.</p>
+          <p>One course that changed my perspective is ANTHR 230 (Globalization and Human Condition). This course made me realize that people live under different conditions in the world. One lesson that I learned in this course is that a solution that works well in one situation does not necessarily work well in others. For instance, in electrical power systems, engineers not only try to provide reliable electricity, but they also need to make sure that the technology is affordable, accessible, and practical for the communities that will use it. This is extremely important for developing countries where some communities do not have access to electricity. Since I want to pursue a career in power systems, I learned through this course that engineering is not only about making things work but also about making sure that things will help the people in need.</p>
+          <p>Besides that class, another class that has been useful to me is LD ST 322 (Leadership Styles and Strategies in a Diverse Society). It helped me realize that there are lots of diverse opinions, means of communication, and problem-solving techniques. An important characteristic of a good leader is not to do everything on their own, but to try to understand other people's opinions and unite the team around one goal. As for my experience, I can relate LD ST 322 to my Senior Design project. My team is designing an eddy current probe in order to test metal electrical conductivity. People in a team are different, and that is why it is necessary to share ideas and distribute tasks among team members.</p>
+          <p>Learning ECON 101 (Principles of Microeconomics) gave me a different view on engineering problems after examining a given solution only in terms of effectiveness and performance in the past. However, in this class, I understood that cost, resource consumption, and economic considerations play the same role in decision-making. For instance, in the power industry, engineers have multiple choices of technologies that could be applied to design and upgrade an electrical system. Yet the most technologically sophisticated technology is not necessarily the optimal one due to its high cost of acquisition and maintenance. Engineers should be able to make a compromise between performance, reliability, and costs. This course confirmed what I learned in my power systems courses at Iowa State. Economic aspects are very important when it comes to designing and operating electrical power systems.</p>
+          <p>The SP CM 212 course (the fundamentals of Public Speaking) demonstrated to me how important communication skills are in the world of engineering. Although an engineer could come up with a wonderful idea, failing to explain those ideas could mean failure for the whole process. By taking this course, I learned how crucial it was to express oneself well, articulate clearly, and think about the audience. I saw the importance of communication skills during my internship at Electrical Power Products as a Quality Engineering Intern. My main responsibility was to work on engineering instructions so that workers could understand how to work with electrical appliances. Thanks to that experience, I understood that communication is necessary not only for making presentations but for being successful in teamwork and technical writing too.</p>
+          <p>When combining these three courses, the first thing that I see is that engineering problems can be more than technical. First, as the whole world strives towards renewables, engineers will have to consider not only efficient generation of electricity. They should pay attention to the expenses of the necessary infrastructure, environmental impact, and how these changes may affect various groups of people. Another aspect is providing reliable electricity access to all people in the world. There are solutions to this problem with engineering, but still engineers will have to consider financial restrictions, resources available, and also future users of the product.</p>
+          <p>Courses on general education have given me irreplaceable knowledge that I can use for my career. They have widened my understanding beyond calculations to the people who affect engineering decisions. This will be particularly useful as I transition from Iowa State University into my career in electrical engineering. In any work I do in this field, from dealing with power systems to collaborating with other engineers to talking with clients. The knowledge gained in these courses will make me a more responsible, open-minded, and skilled professional.</p>
+          <p class="sheet-end">· · ·</p>
+        </div>
+      </article>
 
-  <section class="section" id="cumulative">
-    <div class="wrap">
-      <div class="section-head" data-reveal>
-        <h2>Cumulative Reflection</h2>
-        <p>A Reflective Journey: Navigating Your Cumulative Experience at Iowa State University</p>
-      </div>
-        <article class="doc-body essay" data-reveal>
+      <article class="reflection" id="cumulative">
+        <aside data-reveal>
+          <span class="sub-num">ii.</span>
+          <h3>Cumulative Reflection</h3>
+          <p>A reflective journey: navigating my cumulative experience at Iowa State University.</p>
+          <a class="btn ghost" href="assets/docs/Luu_Cumulative_Reflection.pdf" target="_blank" rel="noopener">Read the PDF ↗</a>
+        </aside>
+        <div class="sheet doc-body" data-reveal>
+          <p class="sheet-run"><span>Truong Luu</span><span>Cumulative Reflection</span></p>
           <p>Reflecting on my years as a student at Iowa State University, I can see that my education in electrical engineering has been more than just coursework and a degree. At the time of starting my university life, I viewed the role of an engineer as a person who has to solve technical problems using math and sciences. In pursuing my major in Electrical Engineering, I realized that being an engineer involves much more than that. An engineer is supposed to solve complex problems, communicate with people from various fields, be a good team player, consider the impacts of his decisions on other people, and constantly learn because of advancements in technology.</p>
           <p>The first major shift for me is that engineering problems should be considered from the perspective of a bigger picture. In college, it is often believed that there is only one right answer. In practice, however, things are different. It is through my electrical engineering classes that I have come to understand that just because something works does not mean that it is a good solution. Engineers need to take into consideration such aspects as cost, reliability, safety, efficiency, ecological impacts, and even the people that would benefit from the engineering project. The importance of it became clear as I started to study more and more about power systems. For instance, when studying power system analysis and economics of electric power planning, I start thinking not only about the behavior of the system electrically but also about the economics of its operation. Generating and transmitting electricity is related to utilities, their customers, communities, and even the environment.</p>
           <p>In the course of my college education, I have come to understand a lot more about engineering problem solving. Initially, my approach would be to find the relevant equation and try to solve it. However, with increased difficulty of class problems, this became inadequate. This necessitated that I first gain an understanding of the system, know the available data, identify the objective, and then select the appropriate solution approach. Each class provided its own challenge. The circuit courses taught me how to analyze the electrical behavior using fundamental principles, Signals and Systems made me think in mathematical domains such as time, frequency, and Laplace domains, and the integrated circuit design presented yet another form of problem whereby the selection made at the transistor level impacts the circuit as a whole. These were all aimed at encouraging power thinking which is necessary to deal with complex systems in power courses.</p>
@@ -509,19 +565,16 @@
           <p>Recently, I have become fascinated by power systems as an example of my learning pattern. Indeed, power systems combine elements of circuits, mathematics, control theory, economics, and physical infrastructure. Whenever I encounter an unknown element, I begin studying the theory behind it and continue with examples, until I am able to link equations to the actual system. After that, I study the application of the concept in practice in actual power grids. The internship was extremely helpful here since I had the opportunity not only to study the theoretical aspects of electrical systems, but to see protection and test equipment in practice as well. At the same time, my experience with VLSI and circuit design provides me with another perspective on electrical engineering, which is applicable to a completely different scale.</p>
           <p>With my undergraduate coursework drawing to a close, I am well aware that graduation will not mean the end of my education. My knowledge of technology, power systems, semiconductor devices, design packages, standards, and engineering practices will continue to evolve during my entire career. While I intend to build on my knowledge of power systems, it is also important for me to retain the fundamentals of circuits and electronics which I have learned through my other courses. One of the things that I plan to do to develop further as an engineer is to study and prepare for the FE Electrical and Computer exam. In addition to that, I also plan to get experience with some of the common software and drawings used by engineers.</p>
           <p>There have been many difficulties and challenges in my college experience at Iowa State University, but these challenges made my educational journey very enriching and productive. It was a difficult curriculum, challenging new concepts, projects that were not successful, and situations that required me to find a different approach to solving a certain problem. Difficulties such as these have developed in me resilience and flexibility. Initially, I entered the program in Electrical Engineering to acquire technical skills. However, I will leave this program with a completely different understanding of what being an engineer involves. Not only are technical skills important, but it is equally vital to be an effective communicator, work as part of a team, show ethical responsibility, have an inquisitive mind, and have the willingness to learn continuously. The biggest realization that I have gained from Iowa State is that my engineering education is not complete once I receive my degree.</p>
-        </article>
-        <p class="doc-pdf" data-reveal><a class="btn ghost" href="assets/docs/Luu_Cumulative_Reflection.pdf" target="_blank" rel="noopener">Read the PDF</a></p>
-    </div>
-  </section>
+          <p class="sheet-end">· · ·</p>
+        </div>
+      </article>
 
-  <section class="section" id="ethics-paper">
-    <div class="wrap">
-      <div class="section-head" data-reveal>
-        <h2>Ethics Paper</h2>
-        <p>What is an ethical engineer?</p>
-      </div>
-        <div class="doc">
-          <aside class="doc-toc" data-track>
+      <article class="reflection" id="ethics-paper">
+        <aside data-reveal>
+          <span class="sub-num">iii.</span>
+          <h3>Ethics Paper</h3>
+          <p>What is an ethical engineer?</p>
+          <nav class="doc-toc" data-track aria-label="Sections of the ethics paper">
             <p class="kicker">In this paper</p>
             <ol>
               <li><a href="#eth-introduction"><span>I</span>Introduction</a></li>
@@ -530,14 +583,17 @@
               <li><a href="#eth-why-these-characteristics-matter"><span>IV</span>Why These Characteristics Matter</a></li>
               <li><a href="#eth-conclusion"><span>V</span>Conclusion</a></li>
             </ol>
-          </aside>
-          <article class="doc-body">
-            <section id="eth-introduction" data-reveal>
+          </nav>
+          <a class="btn ghost" href="assets/docs/Luu_Ethics_Paper.pdf" target="_blank" rel="noopener">Read the PDF ↗</a>
+        </aside>
+        <div class="sheet doc-body" data-reveal>
+          <p class="sheet-run"><span>Truong Luu</span><span>Ethics Paper</span></p>
+            <section id="eth-introduction">
               <h3><span class="n">I</span>Introduction</h3>
               <p>Engineering is not only about building structures, developing software, or solving technical issues; it is a profession that carries great responsibilities since engineers can shape the world and influence society, the environment, and future generations. That is why ethics plays such an important role in engineering; an ethical engineer is someone who demonstrates ethics, professional responsibility, and personal integrity through their decision-making. By going over the three main ethical theories—consequentialism, deontology, and virtue ethics—and highlighting the three qualities that characterize an ethical engineer—integrity, responsibility, and commitment—I will examine what it means to be an ethical engineer in this essay.</p>
               <p>Engineering has an impact on almost every facet of human life in the modern world. The engineering decisions we make today will affect everything around us, from the streets and roads we walk on to the gadgets and devices we use every day. These choices often pose difficult ethical conundrums for engineers, such as balancing cost with public safety or quality and efficiency with environmental harm. The ever-increasing complexity of today's technological advances, such as artificial intelligence (AI) and global connectivity, further emphasizes the need for ethical engineering standards because these technological advances can have unforeseen negative impacts, and put people, communities, and ecosystems at risk if they are not supported by a solid ethical foundation.</p>
             </section>
-            <section id="eth-ethical-theories-and-engineering-practice" data-reveal>
+            <section id="eth-ethical-theories-and-engineering-practice">
               <h3><span class="n">II</span>Ethical Theories and Engineering Practice</h3>
               <p>Ethical theories provide a solid foundation for understanding and evaluating ethical dilemmas in engineering. Three major ethical theories are consequentialism, deontology, and virtue ethics, and each of them offers a different perspective on what it means to act ethically.</p>
               <h4>Consequentialism</h4>
@@ -547,7 +603,7 @@
               <h4>Virtue Ethics</h4>
               <p>When comparing to strict rules and high standards or beneficial outcomes, virtue ethics emphasizes a person's moral principles and characteristics more. Ethical engineers who follow this idea strive to develop their personal traits such as honesty, courage, and wisdom. For example, an engineer working on environmental development projects demonstrates virtue stewardship by advocating for environmentally friendly solutions, even if it means going against the company’s best interests. The virtues that engineers need to guide their moral behavior and decision-making can be developed through a process of continuous self-improvement and ethical reflection. Even in situations where regulations lack precise guidance, virtue ethics encourages engineers to develop moral character and behave in a disciplined manner. Even when there is no legal need, an honest engineer will disclose any potential hazards associated with a project. Likewise, a fair-minded engineer will advocate for ethical labor standards and ensure that employees are treated fairly, even in the face of financial hardship.</p>
             </section>
-            <section id="eth-characteristics-of-an-ethical-engineer" data-reveal>
+            <section id="eth-characteristics-of-an-ethical-engineer">
               <h3><span class="n">III</span>Characteristics of an Ethical Engineer</h3>
               <p>Ethical behavior in engineering can take many forms, but three key characteristics define an ethical engineer: integrity, responsibility, and commitment to public benefits. These qualities shape ethical decision-making and help building trust in the engineering profession.</p>
               <h4>Integrity</h4>
@@ -557,7 +613,7 @@
               <h4>Commitment to Public Welfare</h4>
               <p>The public interest must always take precedence over the interests of engineers, their organizations, or their political parties. This means going beyond simply choosing the easiest path and actively seeking answers that minimize harm and improve society. For example, an ethical engineer designing an industrial facility would try to minimize waste by using environmentally friendly alternatives and increasing energy efficiency, even if these options would cost more time, money, and effort. Likewise, biomedical engineers who create medical devices, vaccines, and medicines need to ensure that their creations are not only safe, but also affordable and available to those who need them the most. There is also another emerging field where the public interest is placed on top: artificial intelligence (AI). Engineers who are involved in developing AI, also need to ensure that AI's algorithms not invade public privacy or have negative impacts on society.</p>
             </section>
-            <section id="eth-why-these-characteristics-matter" data-reveal>
+            <section id="eth-why-these-characteristics-matter">
               <h3><span class="n">IV</span>Why These Characteristics Matter</h3>
               <p>The importance of integrity, responsibility, and commitment to public welfare extends beyond individual engineers; these qualities shape the entire profession, benefiting society at large.</p>
               <ul>
@@ -567,13 +623,13 @@
               </ul>
               <p>These characteristics also resonate with professional engineering codes of ethics, such as the National Society of Professional Engineers (NSPE) Code of Ethics, which emphasizes honesty, responsibility, and the public interest. Ethical engineers do not merely follow regulations; they actively shape the future of engineering by integrating moral considerations into their daily work.</p>
             </section>
-            <section id="eth-conclusion" data-reveal>
+            <section id="eth-conclusion">
               <h3><span class="n">V</span>Conclusion</h3>
               <p>According to theories like consequentialism, deontology, and virtue ethics, an ethical engineer is the one who consistently maintains his or her personal traits such as integrity, responsibility, and dedication to the public benefits and interests. In engineering, these qualities are needed to maintain sustainability, safety, and mutual trust among others. The needs for ethical engineers nowadays is growing as engineering problems in general and specifically technology are becoming more complex and advanced. In addition to protecting the public, engineers should also maintain professional integrity and contribute to creating a better world for future generations by adhering to the ethical standards of the profession.</p>
             </section>
-          </article>
+          <p class="sheet-end">· · ·</p>
         </div>
-        <p class="doc-pdf" data-reveal><a class="btn ghost" href="assets/docs/Luu_Ethics_Paper.pdf" target="_blank" rel="noopener">Read the PDF</a></p>
+      </article>
     </div>
   </section>
   </div>
@@ -603,7 +659,7 @@
   <footer data-footer></footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
-  <script src="assets/js/schematic.js?v=25"></script>
+  <script src="assets/js/schematic.js?v=27"></script>
   <script>
   (function () {
     const svg = document.querySelector('.cover-art .sch');
@@ -638,6 +694,6 @@
     });
   })();
   </script>
-  <script src="assets/js/main.js?v=25"></script>
+  <script src="assets/js/main.js?v=28"></script>
 </body>
 </html>

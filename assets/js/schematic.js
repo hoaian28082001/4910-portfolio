@@ -425,6 +425,71 @@
     return { w: 360, h: 246, body: b, play: playFlow };
   };
 
+  /* --- VLSI: a CMOS inverter switching, with its input and output traced over time --- */
+  F.cmos = () => {
+    const x0 = 292, x1 = 452, P = 120;           // timing window and one clock period
+    const yIn = [62, 104], yOut = [166, 208];     // [high, low] levels for each trace
+    let b = ln('M80 30H140') + txt(110, 20, 'VDD', 'middle', 'sm');
+    b += at(110, 90, 0, mos(true)) + wire([110, 30], [110, 50]);
+    b += at(110, 210, 0, mos(false)) + wire([110, 130], [110, 170]);
+    b += dot(110, 150) + wire([110, 150], [222, 150]) + txt(232, 140, 'OUT', 'start', 'sm');
+    b += wire([70, 90], [50, 90], [50, 210], [70, 210]) + dot(50, 150) + wire([50, 150], [10, 150]) + txt(10, 140, 'IN', 'start', 'sm');
+    b += at(110, 250, 0, gnd());
+    b += txt(128, 94, 'M<tspan class="sub" dy="3">P</tspan>', 'start', 'sm') + txt(128, 214, 'M<tspan class="sub" dy="3">N</tspan>', 'start', 'sm');
+    b += ln(`M${x0} ${yIn[1]}H${x1}M${x0} ${yOut[1]}H${x1}`, 'thin') + ln(`M${x0} 46V${yOut[1] + 8}`, 'thin');
+    b += txt(x1, yIn[0] - 12, 'V<tspan class="sub" dy="3">IN</tspan>', 'end', 'sm') + txt(x1, yOut[0] - 12, 'V<tspan class="sub" dy="3">OUT</tspan>', 'end', 'sm');
+    b += txt(x1, yOut[1] + 26, 't →', 'end', 'sm');
+    // input is high for the first half of each period; the output follows, inverted, a moment later
+    const inHigh = ph => ((ph % 1) + 1) % 1 < 0.5;
+    const trace = (lvl, val) => {
+      let d = '';
+      for (let u = x0 - P; u <= x1; u += 1) d += `${d ? 'L' : 'M'}${u} ${lvl[val((x0 - u) / P) ? 0 : 1]}`;
+      return d;
+    };
+    let o = `<clipPath id="cc-%UID%"><rect x="${x0}" y="40" width="${x1 - x0}" height="190"/></clipPath>`;
+    o += `<g class="live" data-p="${P}">`;
+    o += `<path class="cpath c0" d="M110 30V150H222"/><path class="cpath c2" d="M222 150H110V250"/>`;
+    o += `<g clip-path="url(#cc-%UID%)"><path class="sq c0" d="${trace(yIn, inHigh)}"/><path class="sq c2" d="${trace(yOut, ph => !inHigh(ph - 0.04))}"/></g>`;
+    o += `<circle class="tip c0" cx="${x0}" cy="${yIn[0]}" r="3.4"/><circle class="tip c2" cx="${x0}" cy="${yOut[1]}" r="3.4"/>`;
+    o += `<text class="ptxt vin" x="24" y="176" text-anchor="middle">1</text><text class="ptxt vout" x="240" y="176" text-anchor="middle">0</text>`;
+    o += '</g>';
+    return { w: 462, h: 280, body: b, over: o, play: playCmos, lv: { yIn, yOut, inHigh } };
+  };
+
+  /* --- EE 330: a 16-tap digital potentiometer stepping through its codes --- */
+  F.digipot = () => {
+    const xs = 52, xb = 142, top = 40, step = 22, N = 16;
+    const y = j => top + j * step;                // tap j, from VREF (j = 0) down
+    const gndY = y(N);
+    let b = txt(xs, top - 16, 'V<tspan class="sub" dy="3">REF</tspan>', 'middle', 'sm');
+    for (let j = 0; j < N; j++) {
+      const t = y(j);
+      b += ln(`M${xs} ${t}v5l6 2l-12 3l12 3l-12 3l12 3l-6 2v${step - 21}`);
+      b += dot(xs, t, 2.4) + wire([xs, t], [84, t]) + circ(86, t, 2) + ln(`M88 ${t}L108 ${t - 7}`) + circ(112, t, 2) + wire([114, t], [xb, t]);
+    }
+    b += at(xs, gndY, 0, gnd());
+    b += ln(`M${xb} ${y(0)}V${y(N - 1)}`) + dot(xb, y(8), 2.4) + wire([xb, y(8)], [176, y(8)]) + ln(`M170 ${y(8) - 5}L176 ${y(8)}L170 ${y(8) + 5}`);
+    b += txt(182, y(8) + 4, 'V<tspan class="sub" dy="3">OUT</tspan>', 'start', 'sm');
+    // the 4-bit code that selects a tap
+    const bx = 196;
+    b += txt(bx, top - 16, 'CODE', 'start', 'sm');
+    for (let k = 0; k < 4; k++) b += txt(bx + 11 + k * 26, top + 40, 'D' + (3 - k), 'middle', 'sm');
+    // output meter: the bar height is the selected tap voltage, so it lines up with the tap
+    const mx = 312, mw = 26;
+    b += box(mx, top, mw, gndY - top, 'thin');
+    for (let j = 0; j <= N; j += 4) b += ln(`M${mx + mw} ${y(j)}h6`, 'thin');
+    b += txt(mx + mw / 2, top - 16, 'V<tspan class="sub" dy="3">OUT</tspan>', 'middle', 'sm');
+    b += txt(mx + mw + 10, top + 4, 'V<tspan class="sub" dy="3">REF</tspan>', 'start', 'sm') + txt(mx + mw + 10, gndY + 4, '0', 'start', 'sm');
+    let o = `<g class="live">`;
+    for (let j = 0; j < N; j++) o += `<path class="blade" data-j="${j}" d="M88 ${y(j)}H110"/>`;
+    for (let k = 0; k < 4; k++) o += `<rect class="bit" data-k="${3 - k}" x="${bx + k * 26}" y="${top - 4}" width="22" height="24"/><text class="bittxt" data-k="${3 - k}" x="${bx + 11 + k * 26}" y="${top + 8}">0</text>`;
+    o += `<rect class="meter-fill" x="${mx + 3}" y="${top}" width="${mw - 6}" height="${gndY - top}"/>`;
+    o += `<path class="level" d="M${xs} ${top}H${mx + mw}"/><circle class="tapdot" cx="${xs}" cy="${top}" r="4.2"/>`;
+    o += `<text class="ptxt readout" x="${bx}" y="${top + 76}">TAP 0</text>`;
+    o += '</g>';
+    return { w: 380, h: gndY + 34, body: b, over: o, play: playDigipot, lv: { y, N, top, gndY } };
+  };
+
   /* --- cover: a transmission line in elevation → detail A (insulator string) + detail B (phasors) --- */
   F.cover = () => {
     // far towers stop ~30 units short of the detail boxes (x 790) so no arm or leg touches them
@@ -435,21 +500,17 @@
     let b = `<g data-part="scene">${sc.body}</g>`;
     b += `<g data-part="lead">${circ(ax + 18, ay - 18, 11)}${txt(ax + 18, ay - 14, 'A', 'middle')}` +
       dsh(`M${ax + 29} ${ay - 22}L${dA[0]} ${dA[1]}M${ax + 26} ${ay - 10}L${dA[0]} ${dA[1] + 330}`, 'light') + `</g>`;
-    b += `<g data-part="detA">${insulatorDetail(dA[0], dA[1])}${txt(dA[0], dA[1] + 354, 'DETAIL A · SUSPENSION STRING', 'start', 'cap')}</g>`;
+    b += `<g data-part="detA">${insulatorDetail(dA[0], dA[1])}</g>`;
     const ph = phasorParts(dB[0] + 66, dB[1] + 112, 50, dB[0] + 134, dB[0] + 286, 112, dB[1] + 238);
-    b += `<g data-part="detB">${box(dB[0], dB[1], 300, 330, 'face')}${ph.body}${txt(dB[0], dB[1] + 354, 'DETAIL B · THREE-PHASE VOLTAGES', 'start', 'cap')}</g>`;
-    b += txt(420, 896, 'FIG. I · DOUBLE-CIRCUIT LATTICE TOWER, ELEVATION', 'start', 'cap');
+    b += `<g data-part="detB">${box(dB[0], dB[1], 300, 330, 'face')}${ph.body}</g>`;
     return { w: 1120, h: 900, body: b, over: ph.over, play: playCover };
   };
 
   F.coverTall = () => {
     const sc = towerScene({ G: 770, gTo: 720, left: -60, main: { x: 250, y: 770, s: 0.9 },
       far: [{ x: 520, y: 760, s: 0.4 }, { x: 630, y: 753, s: 0.22 }, { x: 690, y: 749, s: 0.12 }] });
-    const b = `<g data-part="scene">${sc.body}</g>` + txt(30, 796, 'FIG. I · LATTICE TOWER, ELEVATION', 'start', 'cap');
-    return { w: 720, h: 800, body: b, play: (svg, tl) => {
-      playTowerScene(svg, tl, 0, part(svg, 'scene').art);
-      add(tl, q(svg.querySelector('.art'), ':scope > .lbl'), { opacity: [0, 1], duration: 900, easing: 'linear' }, 2400);
-    } };
+    const b = `<g data-part="scene">${sc.body}</g>`;
+    return { w: 720, h: 800, body: b, play: (svg, tl) => playTowerScene(svg, tl, 0, part(svg, 'scene').art) };
   };
 
   /* ---------- rendering ---------- */
@@ -479,7 +540,7 @@
       el.style.strokeDasharray = L;
       el.style.strokeDashoffset = L;
     });
-    svg.querySelectorAll('.lbl,.dot,.fill,.dsh,.phasor,.nodraw').forEach(el => { el.style.opacity = 0; });
+    svg.querySelectorAll('.lbl,.dot,.fill,.dsh,.phasor,.nodraw,.live').forEach(el => { el.style.opacity = 0; });
   }
 
   /* ---------- choreography ---------- */
@@ -563,11 +624,69 @@
     playGeneric(svg, tl, 2700, part(svg, 'detA'), { duration: 900, stagger: 16 });
     playGeneric(svg, tl, 3300, part(svg, 'detB'), { duration: 900, stagger: 20 });
     add(tl, q(svg, '.phasor'), { opacity: [0, 1], duration: 900, easing: 'linear' }, 4000);
-    add(tl, q(svg.querySelector('.art'), ':scope > .lbl'), { opacity: [0, 1], duration: 900, easing: 'linear' }, 2600);
     svg._after.push(() => spinPhasors(svg));
   }
 
+  function playCmos(svg, tl, t0, scope) {
+    playGeneric(svg, tl, t0, scope, { duration: 900 });
+    add(tl, q(svg, '.live'), { opacity: [0, 1], duration: 700, easing: 'linear' }, t0 + 800);
+    svg._after.push(() => {
+      const g = svg.querySelector('.live'), { yIn, yOut, inHigh } = svg._fig.lv;
+      const P = +g.dataset.p, waves = q(g, '.sq'), tips = q(g, '.tip'), paths = q(g, '.cpath');
+      const vin = g.querySelector('.vin'), vout = g.querySelector('.vout');
+      const o = { t: 0 };
+      anime({
+        targets: o, t: [0, 1], duration: 4200, easing: 'linear', loop: true,
+        update: () => {
+          if (hidden(svg)) return;
+          const hi = inHigh(o.t), out = !inHigh(o.t - 0.04);
+          waves.forEach(w => w.setAttribute('transform', `translate(${(o.t * P).toFixed(2)} 0)`));
+          tips[0].setAttribute('cy', yIn[hi ? 0 : 1]);
+          tips[1].setAttribute('cy', yOut[out ? 0 : 1]);
+          paths[0].classList.toggle('on', !hi);     // PMOS pulls OUT up while IN is low
+          paths[1].classList.toggle('on', hi);      // NMOS pulls OUT down while IN is high
+          vin.textContent = hi ? '1' : '0';
+          vout.textContent = out ? '1' : '0';
+        }
+      });
+    });
+  }
+
+  function playDigipot(svg, tl, t0, scope) {
+    playGeneric(svg, tl, t0, scope, { duration: 900, stagger: 6 });
+    add(tl, q(svg, '.live'), { opacity: [0, 1], duration: 700, easing: 'linear' }, t0 + 900);
+    svg._after.push(() => {
+      const g = svg.querySelector('.live'), { y, N, top, gndY } = svg._fig.lv;
+      const blades = q(g, '.blade'), bits = q(g, '.bit'), bitTxt = q(g, '.bittxt');
+      const fill = g.querySelector('.meter-fill'), level = g.querySelector('.level'), tap = g.querySelector('.tapdot');
+      const readout = g.querySelector('.readout');
+      let last = -1;
+      const show = code => {
+        const j = N - 1 - code;                   // a higher code picks a tap nearer VREF
+        const bit = el => !!(code >> +el.dataset.k & 1);
+        blades.forEach(el => el.classList.toggle('on', +el.dataset.j === j));
+        bits.forEach(el => el.classList.toggle('on', bit(el)));
+        bitTxt.forEach(el => { el.textContent = bit(el) ? '1' : '0'; el.classList.toggle('on', bit(el)); });
+        level.style.transform = tap.style.transform = `translateY(${y(j) - top}px)`;
+        fill.style.transform = `scaleY(${((gndY - y(j)) / (gndY - top)).toFixed(3)})`;
+        readout.textContent = 'TAP ' + code;
+      };
+      const o = { t: 0 };
+      anime({
+        targets: o, t: [0, 1], duration: 2 * N * 420, easing: 'linear', loop: true,
+        update: () => {
+          if (hidden(svg)) return;
+          const s = Math.min(2 * N - 1, Math.floor(o.t * 2 * N));
+          const code = s < N ? s : 2 * N - 1 - s; // ramp up through every code, then back down
+          if (code !== last) { last = code; show(code); }
+        }
+      });
+    });
+  }
+
   /* current pulses that travel along any .flow / .flowln path, forever */
+  // a figure inside a closed project panel has no layout, so skip its frames
+  const hidden = svg => !svg.getClientRects().length;
   function toRoot(el, svg) {
     let m = new DOMMatrix();
     for (let n = el.parentNode; n && n !== svg; n = n.parentNode) {
@@ -593,7 +712,7 @@
       const o = { p: 0 };
       anime({
         targets: o, p: 1, duration: dur + k * 260, easing: 'linear', loop: true,
-        update: () => dots.forEach((g, j) => {
+        update: () => !hidden(svg) && dots.forEach((g, j) => {
           const t = (o.p + j / n) % 1;
           const pt = m.transformPoint(path.getPointAtLength(t * L));
           g.setAttribute('transform', `translate(${pt.x.toFixed(1)} ${pt.y.toFixed(1)})`);
