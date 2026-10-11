@@ -425,6 +425,26 @@
     return { w: 360, h: 246, body: b, play: playFlow };
   };
 
+  /* --- relay test (conceptual): load current, injected fault current, then the relay's trip output --- */
+  F.relay = () => {
+    const xF = 100, xT = 236, xOff = 244;          // fault applied, relay trips, injection stops (a zero crossing)
+    let grid = '';
+    for (let x = 60; x <= 300; x += 40) grid += `M${x} 20V220`;
+    for (let y = 60; y <= 180; y += 40) grid += `M20 ${y}H340`;
+    let cur = 'M20 80';
+    for (let x = 22; x <= xOff; x += 2) cur += `L${x} ${(80 - (x <= xF ? 12 : 42) * Math.sin(2 * Math.PI * (x - 20) / 32)).toFixed(1)}`;
+    cur += 'H340';
+    const trip = `M20 204H${xT}V172H340`;
+    let b = dsh(grid, 'grid') + box(20, 20, 320, 200) + ln(cur, 'trace') + ln(trip, 'trace');
+    b += dsh(`M${xF} 20V220M${xT} 20V220`, 'light');
+    b += ln(`M${xF + 4} 148H${xT - 4}M${xF + 10} 144L${xF + 4} 148L${xF + 10} 152M${xT - 10} 144L${xT - 4} 148L${xT - 10} 152`, 'thin');
+    b += `<path class="flow" d="${cur}"/>`;
+    b += txt(xF, 12, 'FAULT APPLIED', 'middle', 'sm') + txt(xT, 12, 'RELAY TRIPS', 'middle', 'sm');
+    b += txt((xF + xT) / 2, 142, 'TRIP TIME', 'middle', 'sm') + txt(334, 34, 'CONCEPTUAL', 'end', 'sm');
+    b += txt(20, 240, 'CH1 · INJECTED CURRENT', 'start', 'sm') + txt(340, 240, 'CH2 · TRIP OUTPUT', 'end', 'sm');
+    return { w: 360, h: 246, body: b, play: playFlow };
+  };
+
   /* --- VLSI: a CMOS inverter switching, with its input and output traced over time --- */
   F.cmos = () => {
     const x0 = 292, x1 = 452, P = 120;           // timing window and one clock period

@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
 <meta name="color-scheme" content="light dark">
-<link rel="stylesheet" href="assets/css/style.css?v=30">
+<link rel="stylesheet" href="assets/css/style.css?v=33">
 <script>(function (d) { d.classList.add('js'); try { var t = localStorage.getItem('theme'); if (t) d.dataset.theme = t; } catch (e) {} })(document.documentElement)</script>
 </head>
 <body class="cover">
@@ -38,16 +38,22 @@
 
   <main>
   <section id="contents" class="wrap toc-page">
-    <div class="toc-grid" data-reveal data-stagger>
-      <div class="toc-frame" aria-hidden="true"></div>
-      <div class="toc-head"><h2>Table of Contents</h2></div>
-      <a class="toc-row" href="#introduction"><span class="n">I</span><span class="t"><b>Introduction</b><small>Welcome, career objective and focus areas</small></span></a>
-      <a class="toc-row" href="#projects"><span class="n">II</span><span class="t"><b>Projects</b><small>Senior design and course projects</small></span></a>
-      <a class="toc-row" href="#experience"><span class="n">III</span><span class="t"><b>Experience</b><small>Quality engineering internship at EP2</small></span></a>
-      <a class="toc-row" href="resume.html"><span class="n">IV</span><span class="t"><b>Résumé</b><small>To view or download</small></span></a>
-      <a class="toc-row" href="#reflections"><span class="n">V</span><span class="t"><b>Reflections</b><small>General education, cumulative and ethics</small></span></a>
-      <a class="toc-row" href="#contact"><span class="n">VI</span><span class="t"><b>Contact</b><small>Email, phone and LinkedIn</small></span></a>
-      <div class="toc-foot"></div>
+    <div class="hex-toc" data-hex>
+      <div class="hex-head">
+        <h2>Table of Contents</h2>
+        <p class="hex-hint">Hover a point · choose a section</p>
+      </div>
+      <div class="hex-stage">
+        <canvas aria-hidden="true"></canvas>
+        <nav class="hex-labels" aria-label="Table of contents">
+          <a href="#introduction"><span class="n">I</span><b>Introduction</b><small>Welcome, career objective and focus areas</small></a>
+          <a href="#projects"><span class="n">II</span><b>Projects</b><small>Senior design and course projects</small></a>
+          <a href="#experience"><span class="n">III</span><b>Experience</b><small>Quality engineering internship at EP2</small></a>
+          <a href="resume.html"><span class="n">IV</span><b>Résumé</b><small>To view or download</small></a>
+          <a href="#reflections"><span class="n">V</span><b>Reflections</b><small>General education, cumulative and ethics</small></a>
+          <a href="#contact"><span class="n">VI</span><b>Contact</b><small>Email, phone and LinkedIn</small></a>
+        </nav>
+      </div>
     </div>
   </section>
 
@@ -322,17 +328,16 @@
                 points within the system to examine energy transfer.</p>
             </dd></div>
             <div><dt>My role</dt><dd>
-              <p>I implemented the boost converter and three power electronics load subsystems within the course model,
-                configured converter controls, and ran simulations to evaluate their operation. I collected and interpreted
-                DC-bus voltage, buck-converter output, three-phase voltage and current, and average-power traces. I documented
-                the circuit configurations and simulation results in my final report.</p>
+              <p>In the course model, I constructed the boost converter and three power electronics loads. I then configured
+                the control of the converters and simulated their performance. I analyzed the voltage at the DC bus, the output
+                of the buck converter, the three phase voltages and currents, as well as the average power. This information
+                was captured in my final report.</p>
             </dd></div>
             <div><dt>Skills &amp; knowledge gained</dt><dd>
-              <p>This project strengthened my understanding of boost and buck converters, three-phase inverters, pulse-width
-                modulation, rectification, and filtering. I gained experience using PLECS to model interconnected power
-                systems and evaluate voltage regulation, switching ripple, and transient responses. Comparing waveforms
-                throughout the model helped me connect individual converter behavior with the operation of the overall energy
-                system.</p>
+              <p>Boost and Buck converters, three phase inverters, PWM techniques, rectifiers, and filters became very clear to
+                me through this project. It was a wonderful learning experience for me as I had to use PLECS to develop models
+                to analyze voltage regulation, switching ripples, and transient response of interconnected power systems.
+                Analyzing the waveforms in the model made me understand the energy system as a whole.</p>
             </dd></div>
             <div><dt>Resources used</dt><dd>
               <p>I used PLECS to implement the circuit, configure control blocks, and simulate system behavior. Resources
@@ -365,29 +370,27 @@
           </figure>
           <dl class="spec">
             <div><dt>Description</dt><dd>
-              <p>Our two-person team designed and simulated a multifunctional integrated circuit in Cadence Virtuoso. A two-bit
-                mode selector configured the circuit as a programmable non-inverting amplifier, programmable inverting
-                amplifier, digital potentiometer, or four-bit digital-to-analog converter (DAC). The design combined a 16-tap
-                resistor string, digital decoders, CMOS bidirectional switches, and a two-stage operational amplifier.
-                Four-bit control inputs selected the potentiometer tap or amplifier gain. We completed the schematic and
-                physical layout, verified the operating modes through transient simulations, and obtained clean final
-                design-rule and layout-versus-schematic checks.</p>
+              <p>Our group of two individuals designed and simulated a multi-functional integrated circuit using Cadence
+                Virtuoso. The two-bit mode selection circuit made our IC act as either a programmable non-inverting amplifier,
+                a programmable inverting amplifier, a digital potentiometer, or a four-bit DAC. The IC had a combination of a
+                16-tap resistor string, digital decoders, CMOS bidirectional switches, and two stages of operational
+                amplifiers. The four-bit control signals selected the tap for the potentiometer or the gain for the amplifier.
+                We successfully designed our circuits and layouts.</p>
             </dd></div>
             <div><dt>My role</dt><dd>
-              <p>I worked with my teammate to develop and integrate the circuit's analog and digital building blocks. I
-                contributed to schematic design, simulation testbenches, physical layout, and verification. Our work included
-                testing decoder logic and switch operation, evaluating programmable amplifier and DAC outputs, and
-                troubleshooting control-bit ordering and amplifier stability. I also helped document the design process,
-                results, and limitations in our final report.</p>
+              <p>I collaborated with my teammate in designing and implementing the analog and digital components of the
+                circuit. My responsibilities include designing the schematic, simulating the testbenches, laying out the
+                physical circuit, and verifying the designs. This includes testing the decoder logic and the switches, the
+                outputs from the programmable amplifier and DAC, and the order of the control bits and the amplifier's
+                stability.</p>
             </dd></div>
             <div><dt>Skills &amp; knowledge gained</dt><dd>
-              <p>This project strengthened my understanding of CMOS transmission gates, digital decoders, resistor-string
-                potentiometers, programmable amplifier feedback, and digital-to-analog conversion. I gained practical
-                experience with hierarchical circuit design, transistor sizing, transient analysis, and integrated-circuit
-                layout. I also learned how design-rule checking (DRC) and layout-versus-schematic (LVS) verification support
-                physical design accuracy. Troubleshooting reinforced the importance of testing operational amplifiers in
-                unity-gain configurations and evaluating how stabilization choices affect output accuracy and usable
-                range.</p>
+              <p>This project enhanced my knowledge of CMOS transmission gates, digital decoders, resistor string
+                potentiometers, programmable amplifier feedback, and digital-to-analog converters. It gave me hands-on
+                experience on hierarchical design, transistor sizing, transient analysis, and integrated circuit layout. It
+                was also informative to learn about DRC and LVS verification in physical design. The process of
+                troubleshooting helped me understand the need for testing operational amplifiers in unity gain mode and
+                analyzing the impact of stabilization decisions on output accuracy and range.</p>
             </dd></div>
             <div><dt>Resources used</dt><dd>
               <p>We used Cadence Virtuoso for schematic capture and layout, ADE Maestro for simulation, and Pegasus for DRC and
@@ -426,6 +429,9 @@
       </div>
 
       <div class="role-head" data-reveal>
+        <a class="role-logo" href="https://ep2.com" target="_blank" rel="noopener">
+          <img src="assets/img/ep2-logo.webp" width="482" height="282" alt="EP² — Electrical Power Products">
+        </a>
         <div>
           <h3>Quality Engineering Intern</h3>
           <p class="org">Electrical Power Products (EP2) · Des Moines, Iowa</p>
@@ -435,15 +441,12 @@
 
       <div class="callout" data-reveal>
         <div class="copy">
-          <p class="big">My main project was writing the Functional Testing work instruction,
-            the procedure QA testers follow to test the different relay panels EP2 builds before they ship.</p>
-          <p>Functional testing confirms that a finished panel actually does what its drawings say. The tester injects
-            currents and voltages, then checks that the protective relays, communication equipment and wiring all
-            respond correctly. Much of that knowledge lived with experienced testers. My job was to turn it into
-            a standardized, step-by-step instruction that any tester can follow on any panel.</p>
+          <p class="big">As a Quality Engineering Intern at Electrical Power Products (EP2), I helped develop and revise
+            work instructions for functional testing and panel assembly. Working alongside experienced testers, I learned
+            the procedures firsthand and documented them in VKS to support consistent work and training.</p>
         </div>
         <figure>
-          <svg class="sch" data-fig="scope" role="img" aria-label="Oscilloscope trace with a sine wave and a PWM square wave"></svg>
+          <svg class="sch" data-fig="relay" role="img" aria-label="Conceptual illustration of relay testing: the test set injects a normal load current, then a larger fault current; after the trip time the relay's trip output switches on and the injection stops"></svg>
         </figure>
       </div>
 
@@ -460,8 +463,8 @@
       <div data-reveal data-stagger>
         <div class="duty"><span class="n">A</span><div>
           <h4>Function Testing work instruction <span class="status">Level 2 review</span></h4>
-          <p>Developed a VKS work instruction that standardizes functional testing of relay panels, and took it through
-            most of Level 2 review.</p>
+          <p>Developed and revised a VKS work instruction intended to standardize functional testing of relay panels. The
+            instruction progressed through most of Level 2 review before my internship ended.</p>
         </div></div>
         <div class="duty"><span class="n">B</span><div>
           <h4>8-inch PSE&amp;G panel assembly work instruction <span class="status">Level 3 review</span></h4>
@@ -657,7 +660,7 @@
   <footer data-footer></footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
-  <script src="assets/js/schematic.js?v=27"></script>
+  <script src="assets/js/schematic.js?v=28"></script>
   <script>
   (function () {
     const svg = document.querySelector('.cover-art .sch');
@@ -693,5 +696,6 @@
   })();
   </script>
   <script src="assets/js/main.js?v=28"></script>
+  <script src="assets/js/hexagon.js?v=1"></script>
 </body>
 </html>
