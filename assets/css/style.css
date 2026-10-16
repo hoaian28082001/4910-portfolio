@@ -559,3 +559,14 @@ th { font: 500 11.5px var(--serif); letter-spacing: .22em; text-transform: upper
 tr:last-child td { border-bottom: 0; }
 td.n { font: 400 22px/1 var(--serif); color: var(--num); font-variant-numeric: lining-nums; }
 td a { white-space: nowrap; }
+
+/* Navigation presents a single section, with the top bar always available. */
+[hidden] { display: none !important; }
+.cover .cover-hero { height: calc(100svh - 66px); }
+.cover:not(.section-view) > .footer { display: none; }
+.section-view main { min-height: calc(100svh - 66px); }
+
+.reflection-picker { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.reflection-picker .pick { min-height: 250px; }
+.refl-sec .reflection + .reflection { border-top: 0; }
+@media (max-width: 760px) { .reflection-picker { grid-template-columns: 1fr; } }

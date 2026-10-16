@@ -3,11 +3,11 @@
   'use strict';
 
   const PAGES = [
-    { href: '#contents', title: 'Contents' },
+    { href: '#home', title: 'Home' },
     { href: '#introduction', title: 'Introduction' },
     { href: '#projects', title: 'Projects' },
     { href: '#experience', title: 'Experience' },
-    { href: 'resume.html', title: 'Résumé' },
+    { href: '#resume', title: 'Résumé' },
     { href: '#reflections', title: 'Reflections' },
     { href: '#contact', title: 'Contact' }
   ];
@@ -22,7 +22,7 @@
   if (top) {
     top.className = 'topbar';
     top.innerHTML = `<div class="wrap topbar-in">
-      <a class="brand" href="${onHome ? '#' : 'index.html'}">Truong Luu</a>
+      <a class="brand" href="${onHome ? '#home' : 'index.html'}">Truong Luu</a>
       <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
       <nav id="site-nav" class="nav" aria-label="Portfolio" data-track>
         ${PAGES.map(p => `<a href="${link(p.href)}"${p.href === page ? ' aria-current="page"' : ''}>${p.title}</a>`).join('')}
@@ -54,6 +54,35 @@
     label();
   }
 
+  /* ---------- show one portfolio section at a time ---------- */
+  if (onHome) {
+    const parts = [...document.querySelectorAll('main > .part')];
+    const hero = document.querySelector('.cover-hero');
+    const showSection = () => {
+      let id;
+      try { id = decodeURIComponent(location.hash.slice(1)); } catch (_) { id = ''; }
+      const target = document.getElementById(id);
+      const selected = target && target.closest('main > .part');
+      parts.forEach(part => { part.hidden = part !== selected; });
+      if (hero) hero.hidden = !!selected;
+      const contents = document.getElementById('contents');
+      if (contents) contents.hidden = !!selected;
+      document.body.classList.toggle('section-view', !!selected);
+      top.querySelectorAll('.nav a').forEach(a => {
+        const active = a.getAttribute('href') === (selected ? '#' + selected.id : '#home');
+        a.classList.toggle('active', active);
+        if (active) a.setAttribute('aria-current', 'page');
+        else a.removeAttribute('aria-current');
+      });
+      requestAnimationFrame(() => {
+        if (selected && target !== selected) target.scrollIntoView({ behavior: 'instant', block: 'start' });
+        else window.scrollTo({ top: 0, behavior: 'instant' });
+      });
+    };
+    showSection();
+    window.addEventListener('hashchange', showSection);
+  }
+
   /* ---------- footer ---------- */
   const foot = document.querySelector('[data-footer]');
   if (foot) {
@@ -67,13 +96,12 @@
   const figs = document.querySelectorAll('svg.sch[data-fig]:not([data-manual])');
   figs.forEach(svg => Schematic.render(svg));
 
-  /* ---------- projects: a project opens only when its card is chosen ----------
+  /* ---------- card pickers: one document or project opens at a time ----------
      (after the figures render, so closed panels still hold fully built drawings) */
-  const picker = document.querySelector('[data-picker]');
-  if (picker) {
+  document.querySelectorAll('[data-picker]').forEach(picker => {
     const tabs = [...picker.querySelectorAll('[role="tab"]')];
     const panels = tabs.map(t => document.getElementById(t.getAttribute('aria-controls')));
-    const hint = document.querySelector('.pick-hint');
+    const hint = picker.parentElement.querySelector('.pick-hint');
     const open = (i, jump) => {
       const already = tabs[i] && tabs[i].getAttribute('aria-selected') === 'true';
       const show = i >= 0 && !(already && !jump);   // choosing the open card again closes it
@@ -104,7 +132,7 @@
     open(-1);
     fromHash();
     window.addEventListener('hashchange', fromHash);
-  }
+  });
 
   /* ---------- reveal on scroll ---------- */
   const reveals = document.querySelectorAll('[data-reveal]');
@@ -134,6 +162,7 @@
   /* ---------- section trackers (top nav, sub-navs, doc TOCs) ---------- */
   if ('IntersectionObserver' in window) {
     document.querySelectorAll('[data-track]').forEach(group => {
+      if (onHome && group.id === 'site-nav') return;
       const links = [...group.querySelectorAll('a[href^="#"]')].filter(a => a.getAttribute('href').length > 1);
       const map = new Map();
       links.forEach(a => {

@@ -10,10 +10,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
 <meta name="color-scheme" content="light dark">
-<link rel="stylesheet" href="assets/css/style.css?v=33">
+<link rel="stylesheet" href="assets/css/style.css?v=35">
 <script>(function (d) { d.classList.add('js'); try { var t = localStorage.getItem('theme'); if (t) d.dataset.theme = t; } catch (e) {} })(document.documentElement)</script>
 </head>
 <body class="cover">
+  <header data-topbar></header>
   <section class="cover-hero">
   <div class="cover-art">
     <svg class="sch" data-fig="cover" data-manual preserveAspectRatio="xMaxYMid slice" role="img"
@@ -27,14 +28,9 @@
       <span class="cover-sub fade-in">Electrical Engineer</span>
     </h1>
     <div class="cover-rule"></div>
-    <nav class="cover-links fade-in" aria-label="Portfolio">
-      <a href="resume.html">Résumé</a>
-      <a href="#contact">Contact</a>
-    </nav>
+
   </aside>
   </section>
-
-  <header data-topbar></header>
 
   <main>
   <section id="contents" class="wrap toc-page">
@@ -49,7 +45,7 @@
           <a href="#introduction"><span class="n">I</span><b>Introduction</b><small>Welcome, career objective and focus areas</small></a>
           <a href="#projects"><span class="n">II</span><b>Projects</b><small>Senior design and course projects</small></a>
           <a href="#experience"><span class="n">III</span><b>Experience</b><small>Quality engineering internship at EP2</small></a>
-          <a href="resume.html"><span class="n">IV</span><b>Résumé</b><small>To view or download</small></a>
+          <a href="#resume"><span class="n">IV</span><b>Résumé</b><small>To view or download</small></a>
           <a href="#reflections"><span class="n">V</span><b>Reflections</b><small>General education, cumulative and ethics</small></a>
           <a href="#contact"><span class="n">VI</span><b>Contact</b><small>Email, phone and LinkedIn</small></a>
         </nav>
@@ -504,6 +500,33 @@
   </section>
   </div>
 
+  <div class="part" id="resume">
+<section class="wrap pagehead">
+    <div data-reveal>
+      <p class="numeral">IV</p>
+      <h1>Résumé</h1>
+    </div>
+  </section>
+
+  <section class="wrap resume-layout">
+    <figure class="resume-sheet" data-reveal>
+      <a href="assets/docs/TruongLuu_Resume.pdf" target="_blank" rel="noopener">
+        <img src="assets/img/resume.webp" width="1700" height="2200"
+             loading="lazy" alt="Résumé of Truong Hoai An Luu: summary, education, work experience at EP2, projects, coursework and skills">
+      </a>
+    </figure>
+
+    <aside class="resume-side" data-reveal>
+      <p class="kicker">One page · PDF</p>
+      <div class="btn-row">
+        <a class="btn" href="assets/docs/TruongLuu_Resume.pdf" download="TruongLuu_Resume.pdf">Download PDF ↓</a>
+        <a class="btn ghost" href="assets/docs/TruongLuu_Resume.pdf" target="_blank" rel="noopener">Open in new tab ↗</a>
+      </div>
+      <p class="meta">Updated September 2026</p>
+    </aside>
+  </section>
+  </div>
+
   <div class="part" id="reflections">
   <section class="wrap pagehead">
     <div data-reveal>
@@ -512,17 +535,30 @@
     </div>
   </section>
 
-  <nav class="subnav" data-track aria-label="Reflections">
+  <section class="section refl-sec" style="border-top:0">
     <div class="wrap">
-      <a href="#gen-ed">General Education</a>
-      <a href="#cumulative">Cumulative</a>
-      <a href="#ethics-paper">Ethics Paper</a>
-    </div>
-  </nav>
-
-  <section class="section refl-sec" style="border-top:0; padding-top: 0">
-    <div class="wrap">
-      <article class="reflection" id="gen-ed">
+      <div class="picker reflection-picker" role="tablist" aria-label="Reflections" data-picker data-reveal>
+        <button class="pick" type="button" role="tab" id="tab-gen-ed" aria-controls="gen-ed" aria-selected="false">
+          <span class="pick-num">I</span>
+          <span class="pick-k">Reflection · General Education</span>
+          <span class="pick-t">Learning Beyond Engineering</span>
+          <span class="pick-m">How courses outside engineering shaped my perspective</span>
+        </button>
+        <button class="pick" type="button" role="tab" id="tab-cumulative" aria-controls="cumulative" aria-selected="false">
+          <span class="pick-num">II</span>
+          <span class="pick-k">Reflection · Cumulative</span>
+          <span class="pick-t">My Journey at Iowa State</span>
+          <span class="pick-m">Learning, growth, and preparation for an engineering career</span>
+        </button>
+        <button class="pick" type="button" role="tab" id="tab-ethics" aria-controls="ethics-paper" aria-selected="false">
+          <span class="pick-num">III</span>
+          <span class="pick-k">Ethics Paper</span>
+          <span class="pick-t">What Is an Ethical Engineer?</span>
+          <span class="pick-m">Integrity, responsibility, and commitment to public welfare</span>
+        </button>
+      </div>
+      <p class="pick-hint">Choose a reflection above to open it.</p>
+      <article class="reflection" id="gen-ed" role="tabpanel" aria-labelledby="tab-gen-ed">
         <aside data-reveal>
           <span class="sub-num">i.</span>
           <h3>General Education</h3>
@@ -543,7 +579,7 @@
         </div>
       </article>
 
-      <article class="reflection" id="cumulative">
+      <article class="reflection" id="cumulative" role="tabpanel" aria-labelledby="tab-cumulative">
         <aside data-reveal>
           <span class="sub-num">ii.</span>
           <h3>Cumulative Reflection</h3>
@@ -570,7 +606,7 @@
         </div>
       </article>
 
-      <article class="reflection" id="ethics-paper">
+      <article class="reflection" id="ethics-paper" role="tabpanel" aria-labelledby="tab-ethics">
         <aside data-reveal>
           <span class="sub-num">iii.</span>
           <h3>Ethics Paper</h3>
@@ -695,7 +731,7 @@
     });
   })();
   </script>
-  <script src="assets/js/main.js?v=28"></script>
+  <script src="assets/js/main.js?v=31"></script>
   <script src="assets/js/hexagon.js?v=1"></script>
 </body>
 </html>
